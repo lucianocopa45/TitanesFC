@@ -2,9 +2,11 @@ import { Routes } from '@angular/router';
 import { HomeComponent } from './pages/home/home.component';
 import { SociosComponent } from './socios/socios.component';
 import { ProfesoresComponent } from './profesores/profesores.component';
+import { MiPerfilComponent } from './mi-perfil/mi-perfil.component';
 
 export const routes: Routes = [
     { path: '', component: HomeComponent },
     {path: 'socios',component: SociosComponent},
-    {path: 'profesores', component: ProfesoresComponent}
+    {path: 'profesores', component: ProfesoresComponent},
+    {path: 'miPerfil', component: MiPerfilComponent}
 ];
