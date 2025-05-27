@@ -109,6 +109,15 @@
       </ul>
     </td>
     <td><span class="estado-activo">Activo</span></td>
+    <td>
+          <!-- Botones de acción -->
+          <button class="btn-editar" (click)="editarProfesor(p)">
+            ✏️
+          </button>
+          <button class="btn-eliminar" (click)="eliminarProfesor(p.id)">
+            🗑️
+          </button>
+        </td>
   </tr>
 </tbody>
   </table>

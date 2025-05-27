@@ -121,3 +121,22 @@
   border-radius: 8px;
   font-size: 0.85rem;
 }
+
+.btn-editar {
+  background-color: #4caf50;
+  border: none;
+  color: white;
+  padding: 5px 8px;
+  margin-right: 5px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.btn-eliminar {
+  background-color: #f44336;
+  border: none;
+  color: white;
+  padding: 5px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+}

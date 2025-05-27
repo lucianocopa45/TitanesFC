@@ -15,7 +15,10 @@ export class ProfesorComponent {
   personalForm: FormGroup;
   userForm: FormGroup;
 
-  profesores: any[] = []; 
+  profesores: any[] = [];
+  editandoProfesorId: number | null = null;
+  fotoURL: string = '';
+  mostrarFormulario: boolean = false;
 
   actividades = [
     {
@@ -35,7 +38,7 @@ export class ProfesorComponent {
       categoria: 'Deporte Individual',
       dia: 'Sábados',
       horario: '10:00 - 12:00',
-      lugar: 'Cancha 01',
+      lugar: 'Cancha 1',
       precio: 1200,
       cupo_maximo: 15,
       cantidad_anotados: 10
@@ -91,7 +94,7 @@ export class ProfesorComponent {
     categoria: 'Deporte de equipo',
     dia: 'Sábado',
     horario: '15:00 - 17:00',
-    lugar: 'Gimansio 2',
+    lugar: 'Gimnasio 2',
     precio: 1600,
     cupo_maximo: 20,
     cantidad_anotados: 17
@@ -124,7 +127,7 @@ export class ProfesorComponent {
     categoria: 'Infantil',
     dia: 'Lunes',
     horario: '17:00 - 18:00',
-    lugar: 'Gimansio 1',
+    lugar: 'Gimnasio 1',
     precio: 1000,
     cupo_maximo: 15,
     cantidad_anotados: 11
@@ -135,7 +138,7 @@ export class ProfesorComponent {
     categoria: 'Arte Marcial',
     dia: 'Miércoles',
     horario: '16:00 - 17:30',
-    lugar: 'Gimansio 3',
+    lugar: 'Gimnasio 3',
     precio: 1100,
     cupo_maximo: 20,
     cantidad_anotados: 8
@@ -146,7 +149,7 @@ export class ProfesorComponent {
     categoria: 'Arte Marcial',
     dia: 'Viernes',
     horario: '15:00 - 16:30',
-    lugar: 'Gimansio 2',
+    lugar: 'Gimnasio 2',
     precio: 1100,
     cupo_maximo: 20,
     cantidad_anotados: 13
@@ -190,7 +193,7 @@ export class ProfesorComponent {
     categoria: 'Deporte en equipo',
     dia: 'Martes',
     horario: '17:00 - 19:30',
-    lugar: 'Gimanasio 2',
+    lugar: 'Gimnasio 2',
     precio: 1110,
     cupo_maximo: 20,
     cantidad_anotados: 18
@@ -234,7 +237,7 @@ export class ProfesorComponent {
     categoria: 'Infantil',
     dia: 'Martes',
     horario: '16:30 - 18:30',
-    lugar: 'Gimanasio 1',
+    lugar: 'Gimnasio 1',
     precio: 1110,
     cupo_maximo: 15,
     cantidad_anotados: 15
@@ -245,7 +248,7 @@ export class ProfesorComponent {
     categoria: 'Infantil',
     dia: 'Sábado',
     horario: '17:00 - 18:30',
-    lugar: 'Gimanasio 3',
+    lugar: 'Gimnasio 3',
     precio: 1210,
     cupo_maximo: 15,
     cantidad_anotados: 7
@@ -286,28 +289,40 @@ export class ProfesorComponent {
     this.step = 1;
   }
 
- submit() {
+submit() {
   if (this.personalForm.valid && this.userForm.valid && this.matchPasswords()) {
-    const actividadesSeleccionadas = this.personalForm.value.actividades.map((id: number) => 
+    const actividadesSeleccionadas = this.personalForm.value.actividades.map((id: number) =>
       this.actividades.find(a => a.id_actividad === id)
     );
 
     const nuevoProfesor = {
+      id: this.editandoProfesorId ?? Date.now(),
       ...this.personalForm.value,
       ...this.userForm.value,
       actividades: actividadesSeleccionadas
     };
 
-    this.profesores.push(nuevoProfesor);
-    console.log('Profesor registrado:', nuevoProfesor);
-    alert('¡Registro exitoso!');
-    this.step = 1;
+    if (this.editandoProfesorId != null) {
+      const index = this.profesores.findIndex(p => p.id === this.editandoProfesorId);
+      if (index !== -1) {
+        this.profesores[index] = nuevoProfesor;
+      }
+      alert('¡Profesor actualizado correctamente!');
+      this.editandoProfesorId = null;
+    } else {
+      this.profesores.push(nuevoProfesor);
+      alert('¡Registro exitoso!');
+    }
+
     this.personalForm.reset();
     this.userForm.reset();
+    this.fotoURL = '';
+    this.step = 1; // Si usás pasos
   } else {
-    alert('Revisá los campos. Asegurate de que estén completos y que las contraseñas coincidan.');
+    alert('Revisá los campos y asegurate de que las contraseñas coincidan.');
   }
 }
+
 
   matchPasswords(): boolean {
     return this.userForm.value.contrasena === this.userForm.value.confirmarContrasena;
@@ -319,5 +334,45 @@ export class ProfesorComponent {
       this.personalForm.patchValue({ foto: file });
     }
   }
-}
 
+editarProfesor(profesor: any) {
+  this.personalForm.patchValue({
+    nombre: profesor.nombre,
+    apellido: profesor.apellido,
+    dni: profesor.dni,
+    fechaNacimiento: profesor.fechaNacimiento,
+    direccion: profesor.direccion,
+    telefono: profesor.telefono,
+    actividades: profesor.actividades.map((a: any) => a.id_actividad),
+    foto: profesor.foto
+  });
+
+  this.userForm.patchValue({
+    correo: profesor.correo,
+    contrasena: profesor.contrasena,
+    confirmarContrasena: profesor.contrasena
+  });
+
+  this.fotoURL = profesor.foto;
+  this.editandoProfesorId = profesor.id;
+  this.step = 1; 
+}
+cambiarFoto(event: any) {
+  const file = event.target.files[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.fotoURL = reader.result as string;
+      this.personalForm.patchValue({ foto: this.fotoURL });
+    };
+    reader.readAsDataURL(file);
+  }
+}
+eliminarProfesor(id: number) {
+  const confirmado = confirm('¿Estás seguro de eliminar este profesor?');
+  if (confirmado) {
+    this.profesores = this.profesores.filter(p => p.id !== id);
+    alert('Profesor eliminado correctamente');
+  }
+}
+}
