@@ -21,7 +21,6 @@ export class ProfesorComponent {
   profesores: any[] = [];
   ultimoId = 0;
   editandoProfesorId: number | null = null;
-  fotoURL: string = '';
   mostrarFormulario: boolean = false;
 
 
@@ -287,8 +286,7 @@ export class ProfesorComponent {
       direccion: ['', Validators.required],
       telefono: ['', Validators.required],
       actividades: [[], Validators.required],
-      especialidad: ['', Validators.required],
-      foto: [null],
+      especialidad: ['', Validators.required]
     });
 
     this.userForm = this.fb.group({
@@ -306,7 +304,7 @@ export class ProfesorComponent {
     telefono: ['', Validators.required],
     actividades: [[], Validators.required],
     especialidad: ['', Validators.required],
-    foto: [null]
+    
   });
   }
 
@@ -340,7 +338,6 @@ submit() {
 
     this.personalForm.reset();
     this.userForm.reset();
-    this.fotoURL = '';
     this.step = 1;
   } else {
     alert('Revisá los campos y asegurate de que las contraseñas coincidan.');
@@ -350,13 +347,6 @@ submit() {
 
   matchPasswords(): boolean {
     return this.userForm.value.contrasena === this.userForm.value.confirmarContrasena;
-  }
-
-  onFileChange(event: any) {
-    const file = event.target.files[0];
-    if (file) {
-      this.personalForm.patchValue({ foto: file });
-    }
   }
 
 editarProfesor(profesor: any) {
@@ -369,24 +359,13 @@ editarProfesor(profesor: any) {
     telefono: profesor.telefono,
     especialidad: profesor.especialidad,
     actividades: profesor.actividades.map((a: any) => a.id_actividad),
-    foto: profesor.foto
+    
   });
 
-  this.fotoURL = profesor.foto;
   this.editandoProfesorId = profesor.id;
   this.mostrarFormulario = true;
 }
-cambiarFoto(event: any) {
-  const file = event.target.files[0];
-  if (file) {
-    const reader = new FileReader();
-    reader.onload = () => {
-      this.fotoURL = reader.result as string;
-      this.personalForm.patchValue({ foto: this.fotoURL });
-    };
-    reader.readAsDataURL(file);
-  }
-}
+
 eliminarProfesor(id: number) {
   const confirmado = confirm('¿Estás seguro de eliminar este profesor?');
   if (confirmado) {
@@ -403,8 +382,8 @@ guardarEdicion() {
     const profesorActualizado = {
       ...this.profesores.find(p => p.id === this.editandoProfesorId),
       ...this.editForm.value,
-      actividades: actividadesSeleccionadas,
-      foto: this.fotoURL
+      actividades: actividadesSeleccionadas
+      
     };
 
     const index = this.profesores.findIndex(p => p.id === this.editandoProfesorId);
@@ -422,7 +401,6 @@ guardarEdicion() {
 cancelarEdicion() {
   this.editandoProfesorId = null;
   this.editForm.reset();
-  this.fotoURL = '';
   this.mostrarFormulario = false;
 }
 }

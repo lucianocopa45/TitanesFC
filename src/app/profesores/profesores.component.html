@@ -53,10 +53,6 @@
 </select>
 <small>*Podés seleccionar más de una con Ctrl o Cmd</small>
     </div>
-    <div class="campo">
-      <label for="foto">Foto</label>
-      <input id="foto" type="file" (change)="onFileChange($event)" />
-    </div>
 
     <div class="botones">
       <button type="button" (click)="nextStep()" class="btn-rojo">Continuar</button>
@@ -190,13 +186,6 @@
         </option>
       </select>
       <small>*Podés seleccionar más de una con Ctrl o Cmd</small>
-    </div>
-    <div class="campo">
-      <label for="foto">Foto</label>
-      <input id="foto" type="file" (change)="cambiarFoto($event)" />
-      <div *ngIf="fotoURL">
-        <img [src]="fotoURL" alt="Foto actual" class="preview-foto" />
-      </div>
     </div>
 
     <div class="botones">
