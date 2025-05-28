@@ -1,7 +1,5 @@
 <div class="registro-profesores-container">
-  <h1 class="titulo-principal">
-  {{ editandoProfesorId ? 'Editar Datos del Profesor' : 'Registro de Profesores' }}
-</h1>
+  <h1 class="titulo-principal">Registro de Profesores</h1>
 
 
   <!-- Indicador de pasos -->
@@ -77,8 +75,8 @@
 
     <div class="botones">
       <button type="button" (click)="prevStep()" class="btn-negro">Atrás</button>
-      <button type="button" (click)="submit()" class="btn-rojo">
-  {{ editandoProfesorId ? 'Guardar Cambios' : 'Confirmar Registro' }}
+    <button type="button" (click)="submit()" class="btn-rojo">
+  Confirmar Registro
 </button>
     </div>
   </form>

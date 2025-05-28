@@ -306,28 +306,19 @@ submit() {
     );
 
     const nuevoProfesor = {
-      id: this.editandoProfesorId ?? Date.now(),
+      id: Date.now(),
       ...this.personalForm.value,
       ...this.userForm.value,
       actividades: actividadesSeleccionadas
     };
 
-    if (this.editandoProfesorId != null) {
-      const index = this.profesores.findIndex(p => p.id === this.editandoProfesorId);
-      if (index !== -1) {
-        this.profesores[index] = nuevoProfesor;
-      }
-      alert('¡Profesor actualizado correctamente!');
-      this.editandoProfesorId = null;
-    } else {
-      this.profesores.push(nuevoProfesor);
-      alert('¡Registro exitoso!');
-    }
+    this.profesores.push(nuevoProfesor);
+    alert('¡Registro exitoso!');
 
     this.personalForm.reset();
     this.userForm.reset();
     this.fotoURL = '';
-    this.step = 1; 
+    this.step = 1;
   } else {
     alert('Revisá los campos y asegurate de que las contraseñas coincidan.');
   }
@@ -346,7 +337,7 @@ submit() {
   }
 
 editarProfesor(profesor: any) {
-  this.personalForm.patchValue({
+  this.editForm.patchValue({
     nombre: profesor.nombre,
     apellido: profesor.apellido,
     dni: profesor.dni,
@@ -354,20 +345,12 @@ editarProfesor(profesor: any) {
     direccion: profesor.direccion,
     telefono: profesor.telefono,
     actividades: profesor.actividades.map((a: any) => a.id_actividad),
-    foto: profesor.foto,
-    
-  });
-
-  this.userForm.patchValue({
-    correo: profesor.correo,
-    contrasena: profesor.contrasena,
-    confirmarContrasena: profesor.contrasena
+    foto: profesor.foto
   });
 
   this.fotoURL = profesor.foto;
   this.editandoProfesorId = profesor.id;
   this.mostrarFormulario = true;
-  this.step = 1;
 }
 cambiarFoto(event: any) {
   const file = event.target.files[0];
@@ -414,7 +397,8 @@ guardarEdicion() {
 
 cancelarEdicion() {
   this.editandoProfesorId = null;
-  this.personalForm.reset();
+  this.editForm.reset();
   this.fotoURL = '';
+  this.mostrarFormulario = false;
 }
 }
