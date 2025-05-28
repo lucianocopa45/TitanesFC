@@ -14,6 +14,9 @@ export class ProfesorComponent {
 
   personalForm: FormGroup;
   userForm: FormGroup;
+  editForm: FormGroup;
+
+  
 
   profesores: any[] = [];
   editandoProfesorId: number | null = null;
@@ -255,9 +258,6 @@ export class ProfesorComponent {
   }
   ];
   
-
-
-
   constructor(private fb: FormBuilder) {
     this.personalForm = this.fb.group({
       nombre: ['', Validators.required],
@@ -275,6 +275,16 @@ export class ProfesorComponent {
       contrasena: ['', [Validators.required, Validators.minLength(6)]],
       confirmarContrasena: ['', Validators.required],
     });
+    this.editForm = this.fb.group({
+    nombre: ['', Validators.required],
+    apellido: ['', Validators.required],
+    dni: ['', Validators.required],
+    fechaNacimiento: ['', Validators.required],
+    direccion: ['', Validators.required],
+    telefono: ['', Validators.required],
+    actividades: [[], Validators.required],
+    foto: [null]
+  });
   }
 
   nextStep() {
@@ -317,7 +327,7 @@ submit() {
     this.personalForm.reset();
     this.userForm.reset();
     this.fotoURL = '';
-    this.step = 1; // Si usás pasos
+    this.step = 1; 
   } else {
     alert('Revisá los campos y asegurate de que las contraseñas coincidan.');
   }
@@ -344,7 +354,8 @@ editarProfesor(profesor: any) {
     direccion: profesor.direccion,
     telefono: profesor.telefono,
     actividades: profesor.actividades.map((a: any) => a.id_actividad),
-    foto: profesor.foto
+    foto: profesor.foto,
+    
   });
 
   this.userForm.patchValue({
@@ -355,7 +366,8 @@ editarProfesor(profesor: any) {
 
   this.fotoURL = profesor.foto;
   this.editandoProfesorId = profesor.id;
-  this.step = 1; 
+  this.mostrarFormulario = true;
+  this.step = 1;
 }
 cambiarFoto(event: any) {
   const file = event.target.files[0];
@@ -374,5 +386,35 @@ eliminarProfesor(id: number) {
     this.profesores = this.profesores.filter(p => p.id !== id);
     alert('Profesor eliminado correctamente');
   }
+}
+guardarEdicion() {
+  if (this.editForm.valid) {
+    const actividadesSeleccionadas = this.editForm.value.actividades.map((id: number) =>
+      this.actividades.find(a => a.id_actividad === id)
+    );
+
+    const profesorActualizado = {
+      ...this.profesores.find(p => p.id === this.editandoProfesorId),
+      ...this.editForm.value,
+      actividades: actividadesSeleccionadas,
+      foto: this.fotoURL
+    };
+
+    const index = this.profesores.findIndex(p => p.id === this.editandoProfesorId);
+    if (index !== -1) {
+      this.profesores[index] = profesorActualizado;
+    }
+
+    alert('Datos personales actualizados correctamente');
+    this.cancelarEdicion();
+  } else {
+    alert('Por favor completá todos los campos del formulario de edición.');
+  }
+}
+
+cancelarEdicion() {
+  this.editandoProfesorId = null;
+  this.personalForm.reset();
+  this.fotoURL = '';
 }
 }

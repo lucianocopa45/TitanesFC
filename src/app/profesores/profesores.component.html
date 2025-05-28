@@ -1,5 +1,8 @@
 <div class="registro-profesores-container">
-  <h1 class="titulo-principal">Registro de Profesores</h1>
+  <h1 class="titulo-principal">
+  {{ editandoProfesorId ? 'Editar Datos del Profesor' : 'Registro de Profesores' }}
+</h1>
+
 
   <!-- Indicador de pasos -->
   <div class="pasos-indicador">
@@ -8,8 +11,9 @@
   </div>
 
   <!-- Paso 1: Datos Personales -->
-  <form *ngIf="step === 1" [formGroup]="personalForm" class="formulario">
+  <form *ngIf="step === 1 && editandoProfesorId === null" [formGroup]="personalForm" class="formulario">
     <h2>Paso 1: Información Personal</h2>
+    
 
     <div class="campo">
       <label for="nombre">Nombre*</label>
@@ -36,7 +40,7 @@
       <input id="telefono" formControlName="telefono" placeholder="Ingrese su teléfono" />
     </div>
     <div class="campo">
-      <label for="actividad">Actividad*</label>
+      <label for="actividades">Actividad*</label>
       <select id="actividades" formControlName="actividades" multiple title="actividades">
   <option *ngFor="let actividad of actividades" [value]="actividad.id_actividad">
     {{ actividad.nombre }} - {{ actividad.dia }} - {{ actividad.horario }} - {{ actividad.lugar }} (Cupo: {{ actividad.cupo_maximo }})
@@ -55,7 +59,7 @@
   </form>
 
   <!-- Paso 2: Datos de Usuario -->
-  <form *ngIf="step === 2" [formGroup]="userForm" class="formulario">
+  <form *ngIf="step === 2 && editandoProfesorId === null" [formGroup]="userForm" class="formulario">
     <h2>Paso 2: Datos de Usuario</h2>
 
     <div class="campo">
@@ -73,7 +77,9 @@
 
     <div class="botones">
       <button type="button" (click)="prevStep()" class="btn-negro">Atrás</button>
-      <button type="button" (click)="submit()" class="btn-rojo">Confirmar Registro</button>
+      <button type="button" (click)="submit()" class="btn-rojo">
+  {{ editandoProfesorId ? 'Guardar Cambios' : 'Confirmar Registro' }}
+</button>
     </div>
   </form>
 </div>
@@ -123,3 +129,55 @@
   </table>
 </div>
 
+<!-- Formulario de EDICIÓN -->
+<div class="editar-profesor-container" *ngIf="editandoProfesorId !== null">
+  <h1>Editar Datos Personales del Profesor</h1>
+
+  <form [formGroup]="editForm" class="formulario">
+    <div class="campo">
+      <label for="nombre">Nombre*</label>
+      <input id="nombre" formControlName="nombre" />
+    </div>
+    <div class="campo">
+      <label for="apellido">Apellido*</label>
+      <input id="apellido" formControlName="apellido" />
+    </div>
+    <div class="campo">
+      <label for="dni">DNI*</label>
+      <input id="dni" formControlName="dni" />
+    </div>
+    <div class="campo">
+      <label for="fechaNacimiento">Fecha de nacimiento*</label>
+      <input id="fechaNacimiento" type="date" formControlName="fechaNacimiento" />
+    </div>
+    <div class="campo">
+      <label for="direccion">Dirección*</label>
+      <input id="direccion" formControlName="direccion" />
+    </div>
+    <div class="campo">
+      <label for="telefono">Teléfono*</label>
+      <input id="telefono" formControlName="telefono" />
+    </div>
+    <div class="campo">
+      <label for="actividades">Actividad*</label>
+      <select id="actividades" formControlName="actividades" multiple title="actividades">
+        <option *ngFor="let actividad of actividades" [value]="actividad.id_actividad">
+          {{ actividad.nombre }} - {{ actividad.dia }} - {{ actividad.horario }} - {{ actividad.lugar }}
+        </option>
+      </select>
+      <small>*Podés seleccionar más de una con Ctrl o Cmd</small>
+    </div>
+    <div class="campo">
+      <label for="foto">Foto</label>
+      <input id="foto" type="file" (change)="cambiarFoto($event)" />
+      <div *ngIf="fotoURL">
+        <img [src]="fotoURL" alt="Foto actual" class="preview-foto" />
+      </div>
+    </div>
+
+    <div class="botones">
+      <button type="button" (click)="guardarEdicion()" class="btn-rojo">Guardar Cambios</button>
+      <button type="button" (click)="cancelarEdicion()" class="btn-negro">Cancelar</button>
+    </div>
+  </form>
+</div>
