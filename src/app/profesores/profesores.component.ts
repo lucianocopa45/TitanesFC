@@ -19,9 +19,29 @@ export class ProfesorComponent {
   
 
   profesores: any[] = [];
+  ultimoId = 0;
   editandoProfesorId: number | null = null;
   fotoURL: string = '';
   mostrarFormulario: boolean = false;
+
+
+  especialidades: string[] = [
+  'Entrenador de fútbol',
+  'Entrenador de básquet',
+  'Profesor de natación',
+  'Entrenador de handball',
+  'Preparador físico',
+  'Instructor de ajedrez',
+  'Entrenador de rugby',
+  'Profesor de gimnasia artística',
+  'Instructor de karate',
+  'Instructor de judo',
+  'Entrenador de atletismo',
+  'Profesor de tenis',
+  'Profesor de vóley',
+  'Docente de nivel inicial (niños)',
+  'Coach deportivo',
+];
 
   actividades = [
     {
@@ -267,6 +287,7 @@ export class ProfesorComponent {
       direccion: ['', Validators.required],
       telefono: ['', Validators.required],
       actividades: [[], Validators.required],
+      especialidad: ['', Validators.required],
       foto: [null],
     });
 
@@ -275,6 +296,7 @@ export class ProfesorComponent {
       contrasena: ['', [Validators.required, Validators.minLength(6)]],
       confirmarContrasena: ['', Validators.required],
     });
+
     this.editForm = this.fb.group({
     nombre: ['', Validators.required],
     apellido: ['', Validators.required],
@@ -283,6 +305,7 @@ export class ProfesorComponent {
     direccion: ['', Validators.required],
     telefono: ['', Validators.required],
     actividades: [[], Validators.required],
+    especialidad: ['', Validators.required],
     foto: [null]
   });
   }
@@ -306,7 +329,7 @@ submit() {
     );
 
     const nuevoProfesor = {
-      id: Date.now(),
+      id: ++this.ultimoId,
       ...this.personalForm.value,
       ...this.userForm.value,
       actividades: actividadesSeleccionadas
@@ -344,6 +367,7 @@ editarProfesor(profesor: any) {
     fechaNacimiento: profesor.fechaNacimiento,
     direccion: profesor.direccion,
     telefono: profesor.telefono,
+    especialidad: profesor.especialidad,
     actividades: profesor.actividades.map((a: any) => a.id_actividad),
     foto: profesor.foto
   });

@@ -123,23 +123,29 @@
 }
 
 .btn-editar {
-  background-color: #4caf50;
+  background-color: #0ab4da;
   border: none;
   color: white;
+  display: inline-block;
   padding: 5px 8px;
   margin-right: 5px;
   border-radius: 4px;
   cursor: pointer;
+  margin-right: 5px;
+  
 }
 
 .btn-eliminar {
   background-color: #f44336;
   border: none;
   color: white;
+  display: inline-block;
   padding: 5px 8px;
   border-radius: 4px;
   cursor: pointer;
+  margin-right: 5px;
 }
+
 .editar-profesor-container h1 {
   color: white;
   text-align: center;

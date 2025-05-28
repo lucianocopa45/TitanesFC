@@ -12,7 +12,6 @@
   <form *ngIf="step === 1 && editandoProfesorId === null" [formGroup]="personalForm" class="formulario">
     <h2>Paso 1: Información Personal</h2>
     
-
     <div class="campo">
       <label for="nombre">Nombre*</label>
       <input id="nombre" formControlName="nombre" placeholder="Ingrese su nombre" />
@@ -37,6 +36,14 @@
       <label for="telefono">Teléfono*</label>
       <input id="telefono" formControlName="telefono" placeholder="Ingrese su teléfono" />
     </div>
+    <div class="campo">
+     <label for="especialidad">Especialidad*</label>
+     <select id="especialidad" formControlName="especialidad" required>
+    <option value="" disabled selected>Seleccione una especialidad</option>
+    <option *ngFor="let esp of especialidades" [value]="esp">{{ esp }}</option>
+  </select>
+  </div>
+
     <div class="campo">
       <label for="actividades">Actividad*</label>
       <select id="actividades" formControlName="actividades" multiple title="actividades">
@@ -65,13 +72,21 @@
       <input id="correo" formControlName="correo" placeholder="Ingrese su Correo"/>
     </div>
     <div class="campo">
-      <label for="contrasena">Contraseña*</label>
-      <input id="contrasena" type="password" formControlName="contrasena"  placeholder="Ingrese su contraseña"/>
-    </div>
-    <div class="campo">
-      <label for="confirmarPasswrd">Confirmar Contraseña*</label>
-      <input id="confirmarPasswrd" type="password" formControlName="confirmarContrasena" placeholder="Confirme su contraseña" />
-    </div>
+  <label for="contrasena">Contraseña*</label>
+  <input id="contrasena" type="password" formControlName="contrasena" placeholder="Ingrese su contraseña" />
+  <div *ngIf="userForm.get('contrasena')?.invalid && (userForm.get('contrasena')?.touched || userForm.get('contrasena')?.dirty)">
+    <small *ngIf="userForm.get('contrasena')?.errors?.['required']">La contraseña es obligatoria.</small>
+    <small *ngIf="userForm.get('contrasena')?.errors?.['minlength']">Debe tener al menos 6 caracteres.</small>
+  </div>
+</div>
+
+<div class="campo">
+  <label for="confirmarPasswrd">Confirmar Contraseña*</label>
+  <input id="confirmarPasswrd" type="password" formControlName="confirmarContrasena" placeholder="Confirme su contraseña" />
+  <div *ngIf="userForm.get('confirmarContrasena')?.touched && !matchPasswords()">
+    <small>Las contraseñas no coinciden.</small>
+  </div>
+</div>
 
     <div class="botones">
       <button type="button" (click)="prevStep()" class="btn-negro">Atrás</button>
@@ -87,24 +102,28 @@
   <table class="tabla-profesores">
     <thead>
       <tr>
+        <td>ID</td>
         <th>Nombre</th>
         <th>Apellido</th>
         <th>DNI</th>
         <th>F. Nacimiento</th>
         <th>Dirección</th>
         <th>Teléfono</th>
+        <th>Especialidad</th>
         <th>Actividad</th>
         <th>Estado</th>
       </tr>
     </thead>
     <tbody>
   <tr *ngFor="let p of profesores">
+    <td>{{ p.id }}</td>
     <td>{{ p.nombre }}</td>
     <td>{{ p.apellido }}</td>
     <td>{{ p.dni }}</td>
     <td>{{ p.fechaNacimiento }}</td>
     <td>{{ p.direccion }}</td>
     <td>{{ p.telefono }}</td>
+    <td>{{ p.especialidad }}</td>
     <td>
       <ul>
         <li *ngFor="let act of p.actividades">
@@ -156,6 +175,13 @@
       <label for="telefono">Teléfono*</label>
       <input id="telefono" formControlName="telefono" />
     </div>
+   <div class="campo">
+  <label for="especialidad">Especialidad*</label>
+  <select id="especialidad" formControlName="especialidad" required>
+    <option value="" disabled selected>Seleccione una especialidad</option>
+    <option *ngFor="let esp of especialidades" [value]="esp">{{ esp }}</option>
+  </select>
+</div>
     <div class="campo">
       <label for="actividades">Actividad*</label>
       <select id="actividades" formControlName="actividades" multiple title="actividades">
