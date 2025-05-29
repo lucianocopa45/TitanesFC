@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 
@@ -11,7 +11,6 @@ import { ReactiveFormsModule } from '@angular/forms';
 })
 export class ProfesorComponent {
   step = 1;
-
   personalForm: FormGroup;
   userForm: FormGroup;
   editForm: FormGroup;
@@ -279,12 +278,12 @@ export class ProfesorComponent {
   
   constructor(private fb: FormBuilder) {
     this.personalForm = this.fb.group({
-      nombre: ['', Validators.required],
-      apellido: ['', Validators.required],
-      dni: ['', Validators.required],
+      nombre: ['', [Validators.required, Validators.pattern('^[A-Za-zÁÉÍÓÚáéíóúÑñ ]+$')]],
+      apellido: ['', [Validators.required, Validators.pattern('^[A-Za-zÁÉÍÓÚáéíóúÑñ ]+$')]],
+      dni: ['', [Validators.required, Validators.pattern('^[0-9]{7,10}$'), Validators.minLength(7), Validators.maxLength(10)]],
       fechaNacimiento: ['', Validators.required],
       direccion: ['', Validators.required],
-      telefono: ['', Validators.required],
+      telefono: ['', [Validators.required, Validators.pattern('^[0-9]{7,15}$')]],
       actividades: [[], Validators.required],
       especialidad: ['', Validators.required]
     });
@@ -296,12 +295,12 @@ export class ProfesorComponent {
     });
 
     this.editForm = this.fb.group({
-    nombre: ['', Validators.required],
-    apellido: ['', Validators.required],
-    dni: ['', Validators.required],
+    nombre: ['', [Validators.required, Validators.pattern('^[A-Za-zÁÉÍÓÚáéíóúÑñ ]+$')]],
+    apellido: ['', [Validators.required, Validators.pattern('^[A-Za-zÁÉÍÓÚáéíóúÑñ ]+$')]],
+    dni: ['', [Validators.required, Validators.pattern('^[0-9]{7,10}$'), Validators.minLength(7), Validators.maxLength(10)]],
     fechaNacimiento: ['', Validators.required],
     direccion: ['', Validators.required],
-    telefono: ['', Validators.required],
+    telefono: ['', [Validators.required, Validators.pattern('^[0-9]{7,15}$')]],
     actividades: [[], Validators.required],
     especialidad: ['', Validators.required],
     
