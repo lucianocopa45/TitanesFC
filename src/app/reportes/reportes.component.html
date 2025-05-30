@@ -1,0 +1,123 @@
+<div style="background-color: #0c1a2c;">
+  <h1 class="tituloReportes">Mis Reportes</h1>
+  <hr class="subrayadoTitulo">
+</div>
+
+<div class="divReportes"> 
+  <hr>
+
+  <h2>Selecciona un reporte</h2>
+
+  <div class="radioButtons">
+
+  <label>
+    <input type="radio" name="reporte" value="dni" [(ngModel)]="opcionSeleccionada" (change)="limpiarCampos()">
+    Actividades del Socio por DNI
+  </label>
+  <br>
+  <label>
+    <input type="radio" name="reporte" value="disponibilidad" [(ngModel)]="opcionSeleccionada" (change)="limpiarCampos()">
+    Actividades con Disponibilidad por día
+  </label>
+  <br>
+  <label>
+    <input type="radio" name="reporte" value="socios" [(ngModel)]="opcionSeleccionada" (change)="limpiarCampos()">
+    Socios Registrados
+  </label>
+
+  </div>
+  <hr>
+
+  <!-- VENTANA DE RESULTADOS -->
+  <div class="divVentanaResultados" *ngIf="opcionSeleccionada">
+    
+    <!-- DNI -->
+    <div *ngIf="opcionSeleccionada === 'dni'">
+      <label for="filtroBusqueda">Ingrese DNI:</label>
+      <input type="text" id="filtroBusqueda" [(ngModel)]="filtroBusqueda" />
+      <button (click)="buscar()">Buscar</button>
+
+      <div *ngIf="socioEncontrado">
+        <h3>Datos del socio</h3>
+        <p><strong>Nombre:</strong> {{ socioEncontrado.nombre }}</p>
+        <p><strong>Apellido:</strong> {{ socioEncontrado.apellido }}</p>
+        <p><strong>DNI:</strong> {{ socioEncontrado.dni }}</p>
+
+        <div *ngIf="actividadDelSocio">
+          <h3>Actividad asignada</h3>
+          <p><strong>Nombre:</strong> {{ actividadDelSocio.nombre }}</p>
+          <p><strong>Día:</strong> {{ actividadDelSocio.dia }}</p>
+          <p><strong>Horario:</strong> {{ actividadDelSocio.horario }}</p>
+        </div>
+
+        <div *ngIf="!actividadDelSocio">
+          <p class="mensaje-error">El socio no tiene actividad asignada.</p>
+        </div>
+      </div>
+
+      <div *ngIf="busquedaRealizada && !socioEncontrado">
+        <p class="mensaje-error">No se encontró ningún socio con ese DNI.</p>
+      </div>
+    </div>
+
+    <!-- DISPONIBILIDAD -->
+    <div *ngIf="opcionSeleccionada === 'disponibilidad'">
+      <label for="filtroBusqueda">Filtrar por día: </label>
+      <select id="filtroBusqueda" [(ngModel)]="filtroBusqueda">
+        <option value=""> -- Día --</option>
+        <option value="Lunes">Lunes</option>
+        <option value="Martes">Martes</option>
+        <option value="Miércoles">Miércoles</option>
+        <option value="Jueves">Jueves</option>
+        <option value="Viernes">Viernes</option>
+        <option value="Sábado">Sábado</option>
+        <option value="Domingo">Domingo</option>
+      </select>
+      <button (click)="buscar()">Buscar</button>
+
+      <ul *ngIf="actividadesDisponibles.length > 0; else noDisponibles">
+        <li *ngFor="let actividad of actividadesDisponibles">
+          <strong>{{ actividad.nombre }}</strong><br>
+          Día: {{ actividad.dia }}<br>
+          Horario: {{ actividad.horario }}<br>
+          Lugar: {{ actividad.lugar }}<br>
+          Precio: {{ '$' + actividad.precio }}<br>
+          Anotados: {{ actividad.cantidad_anotados }}<br>
+          Cupos: {{actividad.cupo_maximo}}<br>
+
+          <p class="mensaje-error" *ngIf="actividad.cupo_maximo - actividad.cantidad_anotados === 0; else sinCupo">
+            No hay cupos disponibles
+          </p>
+          <ng-template #sinCupo>
+            <p class="mensaje-ok">Hay cupos disponibles</p>
+          </ng-template>
+        </li>
+      </ul>
+
+      <ng-template #noDisponibles>
+        <p class="mensaje-error">No hay actividades con disponibilidad para ese día.</p>
+      </ng-template>
+    </div>
+
+    <!-- SOCIOS -->
+    <div *ngIf="opcionSeleccionada === 'socios'">
+      <label for="filtroBusqueda">Ingrese nombre:</label>
+      <input type="text" id="filtroBusqueda" [(ngModel)]="filtroBusqueda" />
+      <button (click)="buscar()">Buscar</button>
+
+      <ul>
+        <li *ngFor="let socio of sociosFiltrados">
+          Estado: <strong class="estado-activo" *ngIf="socio.estadoSocio === true; else noActivo">Activo</strong>
+          <ng-template #noActivo><strong class="estado-inactivo">No Activo</strong></ng-template><br>
+          Dni: {{socio.dni}}<br>
+          Nombre: {{socio.nombre}} Apellido: {{socio.apellido}}<br>
+          Dirección: {{socio.direccion}}<br>
+          Teléfono: {{socio.telefono}}<br>
+          Fecha Ingreso: {{socio.fechaIngreso}}<br>
+          Categoría: {{socio.categoria}}<br>
+        </li>
+      </ul>
+    </div>
+
+  </div>
+</div>
