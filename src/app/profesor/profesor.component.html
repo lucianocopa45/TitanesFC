@@ -1,0 +1,218 @@
+<div class="registro-profesores-container">
+  <h1 class="titulo-principal">Registro de Profesores</h1>
+
+
+  <!-- Indicador de pasos -->
+  <div class="pasos-indicador">
+    <span [class.activo]="step === 1">1</span>
+    <span [class.activo]="step === 2">2</span>
+  </div>
+
+  <!-- Paso 1: Datos Personales -->
+  <form *ngIf="step === 1 && editandoProfesorId === null" [formGroup]="personalForm" class="formulario">
+    <h2>Paso 1: Información Personal</h2>
+    
+    <div class="campo">
+      <label for="nombre">Nombre*</label>
+      <input id="nombre" formControlName="nombre" placeholder="Ingrese su nombre" />
+      <div *ngIf="personalForm.get('nombre')?.touched && personalForm.get('nombre')?.invalid">
+    <small *ngIf="personalForm.get('nombre')?.errors?.['required']">El nombre es obligatorio.</small>
+    <small *ngIf="personalForm.get('nombre')?.errors?.['pattern']">Solo se permiten letras y espacios.</small>
+  </div>
+    </div>
+    <div class="campo">
+      <label for="apellido">Apellido*</label>
+      <input id="apellido" formControlName="apellido" placeholder="Ingrese su apellido" />
+      <div *ngIf="personalForm.get('apellido')?.touched && personalForm.get('apellido')?.invalid">
+    <small *ngIf="personalForm.get('apellido')?.errors?.['required']">El apellido es obligatorio.</small>
+    <small *ngIf="personalForm.get('apellido')?.errors?.['pattern']">Solo se permiten letras y espacios.</small>
+  </div>
+    </div>
+    <div class="campo">
+      <label for="dni">DNI*</label>
+      <input id="dni" formControlName="dni" placeholder="Ingrese su DNI" />
+      <div *ngIf="personalForm.get('dni')?.touched && personalForm.get('dni')?.invalid">
+    <small *ngIf="personalForm.get('dni')?.errors?.['required']">El DNI es obligatorio.</small>
+    <small *ngIf="personalForm.get('dni')?.errors?.['pattern']">Debe contener entre 7 y 10 números.</small>
+    <small *ngIf="personalForm.get('dni')?.errors?.['minlength']">Mínimo 7 dígitos.</small>
+    <small *ngIf="personalForm.get('dni')?.errors?.['maxlength']">Máximo 10 dígitos.</small>
+  </div>
+    </div>
+    <div class="campo">
+      <label for="fechaNacimiento">Fecha de nacimiento*</label>
+      <input id="fechaNacimiento" type="date" formControlName="fechaNacimiento" placeholder="dd/mm/aaaa" />
+    </div>
+    <div class="campo">
+      <label for="direccion">Dirección*</label>
+      <input id="direccion" formControlName="direccion" placeholder="Ingrese su dirección" />
+    </div>
+    <div class="campo">
+      <label for="telefono">Teléfono*</label>
+      <input id="telefono" formControlName="telefono" placeholder="Ingrese su teléfono" />
+       <div *ngIf="personalForm.get('telefono')?.touched && personalForm.get('telefono')?.invalid">
+    <small *ngIf="personalForm.get('telefono')?.errors?.['required']">El teléfono es obligatorio.</small>
+    <small *ngIf="personalForm.get('telefono')?.errors?.['pattern']">Debe tener entre 7 y 15 dígitos numéricos.</small>
+  </div>
+    </div>
+    <div class="campo">
+      <label for="especialidad">Especialidad*</label>
+      <select id="especialidad" formControlName="especialidad" required>
+    <option value="" disabled selected>Seleccione una especialidad</option>
+    <option *ngFor="let esp of especialidades" [value]="esp">{{ esp }}</option>
+  </select>
+  </div>
+
+    <div class="campo">
+      <label for="actividades">Actividad*</label>
+      <select id="actividades" formControlName="actividades" multiple title="actividades">
+  <option *ngFor="let actividad of actividades" [value]="actividad.id_actividad">
+    {{ actividad.nombre }} - {{ actividad.dia }} - {{ actividad.horario }} - {{ actividad.lugar }} (Cupo: {{ actividad.cupo_maximo }})
+  </option>
+</select>
+<small>*Podés seleccionar más de una con Ctrl o Cmd</small>
+    </div>
+
+    <div class="botones">
+      <button type="button" (click)="nextStep()" class="btn-rojo">Continuar</button>
+    </div>
+  </form>
+
+  <!-- Paso 2: Datos de Usuario -->
+  <form *ngIf="step === 2 && editandoProfesorId === null" [formGroup]="userForm" class="formulario">
+    <h2>Paso 2: Datos de Usuario</h2>
+
+    <div class="campo">
+      <label for="correo">Correo*</label>
+      <input id="correo" formControlName="correo" placeholder="Ingrese su Correo"/>
+      <div *ngIf="userForm.get('correo')?.touched && userForm.get('correo')?.invalid">
+    <small *ngIf="userForm.get('correo')?.errors?.['required']">El correo es obligatorio.</small>
+    <small *ngIf="userForm.get('correo')?.errors?.['email']">Debe ser un correo válido.</small>
+  </div>
+    </div>
+    <div class="campo">
+  <label for="contrasena">Contraseña*</label>
+  <input id="contrasena" type="password" formControlName="contrasena" placeholder="Ingrese su contraseña" />
+  <div *ngIf="userForm.get('contrasena')?.invalid && (userForm.get('contrasena')?.touched || userForm.get('contrasena')?.dirty)">
+    <small *ngIf="userForm.get('contrasena')?.errors?.['required']">La contraseña es obligatoria.</small>
+    <small *ngIf="userForm.get('contrasena')?.errors?.['minlength']">Debe tener al menos 6 caracteres.</small>
+  </div>
+</div>
+
+<div class="campo">
+  <label for="confirmarPasswrd">Confirmar Contraseña*</label>
+  <input id="confirmarPasswrd" type="password" formControlName="confirmarContrasena" placeholder="Confirme su contraseña" />
+  <div *ngIf="userForm.get('confirmarContrasena')?.touched && !matchPasswords()">
+    <small>Las contraseñas no coinciden.</small>
+  </div>
+</div>
+
+    <div class="botones">
+      <button type="button" (click)="prevStep()" class="btn-negro">Atrás</button>
+    <button type="button" (click)="submit()" class="btn-rojo">
+  Confirmar Registro
+</button>
+    </div>
+  </form>
+</div>
+<!-- Tabla de profesores registrados -->
+<div class="tabla-container" *ngIf="profesores.length > 0">
+  <h2>Registro de profesores</h2>
+  <table class="tabla-profesores">
+    <thead>
+      <tr>
+        <td>ID</td>
+        <th>Nombre</th>
+        <th>Apellido</th>
+        <th>DNI</th>
+        <th>F. Nacimiento</th>
+        <th>Dirección</th>
+        <th>Teléfono</th>
+        <th>Especialidad</th>
+        <th>Actividad</th>
+        <th>Estado</th>
+      </tr>
+    </thead>
+    <tbody>
+  <tr *ngFor="let p of profesores">
+    <td>{{ p.id }}</td>
+    <td>{{ p.nombre }}</td>
+    <td>{{ p.apellido }}</td>
+    <td>{{ p.dni }}</td>
+    <td>{{ p.fechaNacimiento }}</td>
+    <td>{{ p.direccion }}</td>
+    <td>{{ p.telefono }}</td>
+    <td>{{ p.especialidad }}</td>
+    <td>
+      <ul>
+        <li *ngFor="let act of p.actividades">
+          {{ act.nombre }} ({{ act.dia }} {{ act.horario }}) - {{ act.lugar }}
+        </li>
+      </ul>
+    </td>
+    <td><span class="estado-activo">Activo</span></td>
+    <td>
+          <!-- Botones de acción -->
+          <button class="btn-editar" (click)="editarProfesor(p)">
+            ✏️
+          </button>
+          <button class="btn-eliminar" (click)="eliminarProfesor(p.id)">
+            🗑️
+          </button>
+        </td>
+  </tr>
+</tbody>
+  </table>
+</div>
+
+<!-- Formulario de EDICIÓN -->
+<div class="editar-profesor-container" *ngIf="editandoProfesorId !== null">
+  <h1>Editar Datos Personales del Profesor</h1>
+
+  <form [formGroup]="editForm" class="formulario">
+    <div class="campo">
+      <label for="nombre">Nombre*</label>
+      <input id="nombre" formControlName="nombre" />
+    </div>
+    <div class="campo">
+      <label for="apellido">Apellido*</label>
+      <input id="apellido" formControlName="apellido" />
+    </div>
+    <div class="campo">
+      <label for="dni">DNI*</label>
+      <input id="dni" formControlName="dni" />
+    </div>
+    <div class="campo">
+      <label for="fechaNacimiento">Fecha de nacimiento*</label>
+      <input id="fechaNacimiento" type="date" formControlName="fechaNacimiento" />
+    </div>
+    <div class="campo">
+      <label for="direccion">Dirección*</label>
+      <input id="direccion" formControlName="direccion" />
+    </div>
+    <div class="campo">
+      <label for="telefono">Teléfono*</label>
+      <input id="telefono" formControlName="telefono" />
+    </div>
+    <div class="campo">
+  <label for="especialidad">Especialidad*</label>
+  <select id="especialidad" formControlName="especialidad" required>
+    <option value="" disabled selected>Seleccione una especialidad</option>
+    <option *ngFor="let esp of especialidades" [value]="esp">{{ esp }}</option>
+  </select>
+</div>
+    <div class="campo">
+      <label for="actividades">Actividad*</label>
+      <select id="actividades" formControlName="actividades" multiple title="actividades">
+        <option *ngFor="let actividad of actividades" [value]="actividad.id_actividad">
+          {{ actividad.nombre }} - {{ actividad.dia }} - {{ actividad.horario }} - {{ actividad.lugar }}
+        </option>
+      </select>
+      <small>*Podés seleccionar más de una con Ctrl o Cmd</small>
+    </div>
+
+    <div class="botones">
+      <button type="button" (click)="guardarEdicion()" class="btn-rojo">Guardar Cambios</button>
+      <button type="button" (click)="cancelarEdicion()" class="btn-negro">Cancelar</button>
+    </div>
+  </form>
+</div>

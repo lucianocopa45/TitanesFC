@@ -4,12 +4,12 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'app-profesores',
+  selector: 'app-profesor',
   imports: [CommonModule, ReactiveFormsModule],
-  templateUrl: './profesores.component.html',
-  styleUrls: ['./profesores.component.css'] 
+  templateUrl: './profesor.component.html',
+  styleUrl: './profesor.component.css'
 })
-export class ProfesoresComponent {
+export class ProfesorComponent {
   step = 1;
   personalForm: FormGroup;
   userForm: FormGroup;
