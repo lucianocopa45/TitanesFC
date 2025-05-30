@@ -63,17 +63,5 @@
 
       </div>
     </div>
-  <div class="row">
-    @for (actividad of actividades; track $index) {
-    <div class="col-md-4 mb-4">
-      <div class="card h-100 shadow">
-        <img [src]="actividad.img" class="card-img-top" alt="Actividad">
-        <div class="card-body">
-          <h5 class="card-title">{{ actividad.nombre }}</h5>
-          <p class="card-text">{{ actividad.descripcion }}</p>
-        </div>
-      </div>
-    </div>
-    }
-  </div>
+
 </div>

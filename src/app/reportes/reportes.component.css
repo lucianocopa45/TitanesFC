@@ -1,0 +1,127 @@
+/* Fuente moderna para todo el sitio */
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f0f2f5;
+  margin: 0;
+  padding: 0;
+}
+.tituloReportes {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 3em;
+  font-weight: bold;
+  color: white;
+  text-align: left;
+  margin-left: 40px;
+  margin-bottom: 0;
+  padding-top: 20px;
+  background-color: #0c1a2c;
+}
+
+.subrayadoTitulo {
+  width: 200px;
+  height: 4px;
+  background-color: red;
+  border: none;
+  margin-left: 85px;
+  margin-top: 5px;
+  margin-bottom: 20px;
+  border-radius: 2px;
+}
+.divReportes {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 30px;
+    background-color: #0A2662;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    color: #f9f9f9;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: flex-start;
+}
+
+label {
+  font-size: 1.2em;
+  margin-right: 10px;
+  font-weight: 500;
+}
+
+button {
+    margin-top: 10px;
+    padding: 5px;
+    font-size: 1em;
+    background-color: #e20000;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    /* gap: 10px; */
+    margin-left: 10px;
+    width: 80px;
+}
+
+button:hover {
+  background-color: #740800;
+}
+
+.divVentanaResultados {
+  margin-top: 30px;
+  height: 400px; /* Tamaño fijo */
+  overflow-y: auto;
+  border: 2px solid #ccc;
+  border-radius: 10px;
+  padding: 20px;
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+  background-color: #ffffff;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+  color: #333;
+  font-size: 1em;
+  line-height: 1.6;
+}
+
+.radioButtons {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  padding: 20px;
+  gap: 20px;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+li {
+  text-align: left;
+  border-bottom: 1px solid #e0e0e0;
+  margin-bottom: 15px;
+  padding-bottom: 10px;
+  font-size: 1em;
+}
+
+.mensaje-error {
+  color: #e74c3c;
+  font-weight: bold;
+}
+
+.mensaje-ok {
+  color: #2ecc71;
+  font-weight: bold;
+}
+
+.estado-activo {
+  color: #27ae60;
+  font-weight: 500;
+}
+
+.estado-inactivo {
+  color: #c0392b;
+  font-weight: 500;
+}
