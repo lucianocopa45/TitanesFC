@@ -37,7 +37,47 @@
       <input type="text" id="filtroBusqueda" [(ngModel)]="filtroBusqueda" />
       <button (click)="buscar()">Buscar</button>
 
-      <div *ngIf="socioEncontrado">
+<div class="tabla-container" *ngIf="socioEncontrado">
+  <h2>Datos del socio</h2>
+  <table class="tabla-reportes">
+    <tr>
+      <th>Nombre</th>
+      <th>Apellido</th>
+      <th>DNI</th>
+    </tr>
+    <tr>
+      <td>{{ socioEncontrado.nombre }}</td>
+      <td>{{ socioEncontrado.apellido }}</td>
+      <td>{{ socioEncontrado.dni }}</td>
+    </tr>
+  </table>
+
+  <div *ngIf="actividadDelSocio; else sinActividad">
+    <h2>Actividad asignada</h2>
+    <table class="tabla-reportes">
+      <tr>
+        <th>Nombre</th>
+        <th>Día</th>
+        <th>Horario</th>
+      </tr>
+      <tr>
+        <td>{{ actividadDelSocio.nombre }}</td>
+        <td>{{ actividadDelSocio.dia }}</td>
+        <td>{{ actividadDelSocio.horario }}</td>
+      </tr>
+    </table>
+  </div>
+
+  <ng-template #sinActividad>
+    <p class="mensaje-error">El socio no tiene actividad asignada.</p>
+  </ng-template>
+</div>
+
+<div *ngIf="busquedaRealizada && !socioEncontrado">
+  <p class="mensaje-error">No se encontró ningún socio con ese DNI.</p>
+</div>
+
+      <!-- <div *ngIf="socioEncontrado">
         <h3>Datos del socio</h3>
         <p><strong>Nombre:</strong> {{ socioEncontrado.nombre }}</p>
         <p><strong>Apellido:</strong> {{ socioEncontrado.apellido }}</p>
@@ -57,7 +97,7 @@
 
       <div *ngIf="busquedaRealizada && !socioEncontrado">
         <p class="mensaje-error">No se encontró ningún socio con ese DNI.</p>
-      </div>
+      </div> -->
     </div>
 
     <!-- DISPONIBILIDAD -->
@@ -74,8 +114,46 @@
         <option value="Domingo">Domingo</option>
       </select>
       <button (click)="buscar()">Buscar</button>
+<div class="tabla-container" >
+<table class="tabla-reportes" *ngIf="actividadesDisponibles.length > 0; else noDisponibles">
+  <thead>
+    <tr>
+      <th>Nombre</th>
+      <th>Día</th>
+      <th>Horario</th>
+      <th>Lugar</th>
+      <th>Precio</th>
+      <th>Anotados</th>
+      <th>Cupos</th>
+      <th>Disponibilidad</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let actividad of actividadesDisponibles">
+      <td><strong>{{ actividad.nombre }}</strong></td>
+      <td>{{ actividad.dia }}</td>
+      <td>{{ actividad.horario }}</td>
+      <td>{{ actividad.lugar }}</td>
+      <td>{{ '$' + actividad.precio }}</td>
+      <td>{{ actividad.cantidad_anotados }}</td>
+      <td>{{ actividad.cupo_maximo }}</td>
+      <td>
+        <span class="mensaje-error" *ngIf="actividad.cupo_maximo - actividad.cantidad_anotados === 0; else sinCupo">
+          No hay cupos disponibles
+        </span>
+        <ng-template #sinCupo>
+          <span class="mensaje-ok">Hay cupos disponibles</span>
+        </ng-template>
+      </td>
+    </tr>
+  </tbody>
+</table>
 
-      <ul *ngIf="actividadesDisponibles.length > 0; else noDisponibles">
+<ng-template #noDisponibles>
+  <p class="mensaje-error">No hay actividades con disponibilidad para ese día.</p>
+</ng-template>
+</div>
+      <!-- <ul *ngIf="actividadesDisponibles.length > 0; else noDisponibles">
         <li *ngFor="let actividad of actividadesDisponibles">
           <strong>{{ actividad.nombre }}</strong><br>
           Día: {{ actividad.dia }}<br>
@@ -96,7 +174,8 @@
 
       <ng-template #noDisponibles>
         <p class="mensaje-error">No hay actividades con disponibilidad para ese día.</p>
-      </ng-template>
+      </ng-template> -->
+
     </div>
 
     <!-- SOCIOS -->
@@ -105,7 +184,52 @@
       <input type="text" id="filtroBusqueda" [(ngModel)]="filtroBusqueda" />
       <button (click)="buscar()">Buscar</button>
 
-      <ul>
+      <div class="tabla-container" >
+  <table class="tabla-reportes">
+        <thead>
+      <tr>
+        <td>Estado</td>
+        <th>Dni</th>
+        <th>Nombre</th>
+        <th>Apellido</th>
+        <th>Dirección</th>
+        <th>Teléfono</th>
+        <th>Fecha Ingreso</th>
+        <th>Categoría</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let socio of sociosFiltrados">
+        <td>
+          <strong class="estado-activo" *ngIf="socio.estadoSocio === true; else noActivo">Activo</strong>
+         <ng-template #noActivo><strong class="estado-inactivo">No Activo</strong></ng-template>
+        </td>
+        <td>
+          {{socio.dni}}
+        </td>
+        <td>
+          {{socio.nombre}}
+        </td>
+        <td>
+          {{socio.apellido}}
+        </td>
+        <td>
+          {{socio.direccion}}
+        </td>
+        <td>
+          {{socio.telefono}}
+        </td>
+        <td>
+          {{socio.fechaIngreso}}
+        </td>
+        <td>
+          {{socio.categoria}}
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+      <!-- <ul>
         <li *ngFor="let socio of sociosFiltrados">
           Estado: <strong class="estado-activo" *ngIf="socio.estadoSocio === true; else noActivo">Activo</strong>
           <ng-template #noActivo><strong class="estado-inactivo">No Activo</strong></ng-template><br>
@@ -116,7 +240,7 @@
           Fecha Ingreso: {{socio.fechaIngreso}}<br>
           Categoría: {{socio.categoria}}<br>
         </li>
-      </ul>
+      </ul> -->
     </div>
 
   </div>
