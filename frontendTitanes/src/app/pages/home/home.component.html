@@ -1,0 +1,89 @@
+<!-- home.component.html -->
+<div class="container text-white">
+  <div class="d-flex justify-content-end gap-2 mb-3 botones-sesion">
+  <button class="btn-registro" (click)="mostrarOpciones = true">Registrarse</button>
+    <button class="btn-login" [routerLink]="'login'">Iniciar Sesión</button>
+  </div>
+<div *ngIf="mostrarOpciones" class="opciones-registro">
+  <button class="opcion" (click)="irA('registroprofesores')">Profesor</button>
+  <button class="opcion" (click)="irA('registrosocios')">Socio</button>
+  <button class="cerrar" (click)="mostrarOpciones = false">Cancelar</button>
+</div>
+  <div class="text-center my-4">
+    <h1 class="display-5">Bienvenido a Titanes FC</h1>
+    <p class="lead">Club deportivo para todas las edades</p>
+  </div>
+
+  <div class="card-historia">
+    <img src="logoTitanes.jpg" alt="logo titantesfc" width="350px" height="100%">
+    <div class="historia-texto">
+      <h1>Titanes FC</h1>
+      <p class="historia-descripcion">Fundado en 1985, Titanes FC es más que un club deportivo: es una familia unida por la pasión, el esfuerzo y la excelencia.</p>
+      <p>Nuestro compromiso es formar atletas íntegros, con valores sólidos y habilidades excepcionales...</p>
+      <p>En Titanes FC creemos que el deporte es una herramienta transformadora...</p>
+    </div>
+  </div>
+
+  <div class="card-propaganda">
+    <h1>¿Por qué elegir Titanes?</h1>
+    <div class="card-eci">
+      <div class="dentro-edi">
+        <i id="iconos-edi" class="bi bi-shield-check"></i>
+        <h2>Excelencia Deportiva</h2>
+        <p>Formamos campeones con programas de entrenamiento personalizados y entrenadores de élite.</p>
+      </div>
+      <div class="dentro-edi">
+        <i id="iconos-edi" class="bi bi-people-fill"></i>
+        <h2>Comunidad Unida</h2>
+        <p>Somos una familia que comparte valores, celebra logros y se apoya en los desafíos.</p>
+      </div>
+      <div class="dentro-edi">
+        <i id="iconos-edi" class="bi bi-building-fill"></i>
+        <h2>Instalaciones Premium</h2>
+        <p>Contamos con infraestructura de primer nivel para todas las disciplinas deportivas.</p>
+      </div>
+    </div>
+
+    <div class="card-fc">
+      <div class="dentro-fc">
+        <i id="iconos-fc" class="bi bi-book"></i>
+        <div class="info-fc">
+          <h2>Formación Integral</h2>
+          <p>Desarrollamos no solo atletas, sino personas con valores y principios sólidos para la vida.</p>
+        </div>
+      </div>
+      <div class="dentro-fc">
+        <i id="iconos-fc" class="bi bi-journal-text"></i>
+        <div class="info-fc">
+          <h2>Competencias Internacionales</h2>
+          <p>Participamos en torneos nacionales e internacionales...</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card-familiaInfo">
+    <div class="dentro-familiaInfo">
+      <h1>¡Únete a la familia Titanes FC!</h1>
+      <h2>Descubre todas las actividades y beneficios que tenemos para ti...</h2>
+      <div class="botones-familia">
+        <button class="boton-familiaActividad">Conoce nuestras actividades</button>
+        <button class="boton-familiaSocio">Hazte socio</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    @for (actividad of actividades; track $index) {
+    <div class="col-md-4 mb-4">
+      <div class="card h-100 shadow">
+        <img [src]="actividad.img" class="card-img-top" alt="Actividad">
+        <div class="card-body">
+          <h5 class="card-title">{{ actividad.nombre }}</h5>
+          <p class="card-text">{{ actividad.descripcion }}</p>
+        </div>
+      </div>
+    </div>
+    }
+  </div>
+</div>
