@@ -152,7 +152,7 @@
       <td>{{ s.telefono }}</td>
       <td>{{ s.categoria.nombre }}</td>
       <td>${{ s.categoria.costo }}</td>
-      <td>{{ getCostoTotal(s.actividades) | currency:'ARS' }}</td>
+      <td>{{ getCostoTotal(s) | currency:'ARS' }}</td>
       <td><span class="estado-activo">Activo</span></td>
       <td>
         <button class="btn-editar" (click)="editarSocio(s)">✏️</button>
