@@ -262,27 +262,7 @@ actividades = [
   }
   ];
 
-// getCostoTotal(idsActividades: number[]): number {
-//   let total = 0;
-//   if (idsActividades && idsActividades.length > 0) {
-//     idsActividades.forEach(id => {
-//       const actividad = this.actividades.find(act => act.id_actividad === id);
-//       if (actividad) {
-//         total += actividad.precio;
-//       }
-//     });
-//   }
-//   return total;
-// }
-
-getCostoTotal(socio: any): number {
-  const costoCategoria = socio.categoria?.costo || 0;
-  const costoActividades = socio.actividades?.reduce((total: number, act: any) => total + (act.costo || 0), 0) || 0;
-  return costoCategoria + costoActividades;
-}
-
   
-
   constructor(private fb: FormBuilder) {
     this.personalForm = this.fb.group({
       nombre: ['', [Validators.required, Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/)]],
@@ -309,6 +289,7 @@ getCostoTotal(socio: any): number {
       direccion: ['', Validators.required],
       telefono: ['', Validators.required],
       categoria: ['', Validators.required],
+      actividades:[[]]
     });
   }
 
@@ -331,25 +312,47 @@ getCostoTotal(socio: any): number {
     this.step = 1;
   }
 
-  submit() {
-  if (this.personalForm.invalid || this.userForm.invalid || !this.matchPasswords()) {
-    return;
-  }
+submit() {
+    if (this.personalForm.invalid || this.userForm.invalid || !this.matchPasswords()) {
+      this.personalForm.markAllAsTouched();
+      this.userForm.markAllAsTouched();
+      return;
+    }
 
+  
+    const selectedCategory = this.personalForm.value.categoria;
+
+  
+    const selectedActivityIds = this.personalForm.value.actividades;
+    const selectedActivities = this.actividades.filter(act =>
+      selectedActivityIds.includes(act.id_actividad)
+    );
 
   const nuevoSocio = {
-    id: this.socios.length + 1,
-    ...this.personalForm.value,
-    ...this.userForm.value,
-    categoria: this.personalForm.value.categoria, 
-    actividades: this.personalForm.value.actividades.map((a: any) => Number(a)) 
-  };
+      id: this.socios.length + 1,
+      ...this.personalForm.value,
+      ...this.userForm.value,
+      categoria: selectedCategory, 
+      actividades: selectedActivities 
+    };
 
     this.socios.push(nuevoSocio);
     this.personalForm.reset();
     this.userForm.reset();
     this.step = 1;
   }
+
+  getCostoTotal(socio: any): number {
+    const costoCategoria = socio.categoria?.costo || 0;
+    const costoActividades = socio.actividades?.reduce((total: number, act: any) => total + (act.precio || 0), 0) || 0;
+    return costoCategoria + costoActividades;
+  }
+
+  // getCostoTotal(socio: any): number {
+//   const costoCategoria = socio.categoria?.costo || 0;
+//   const costoActividades = socio.actividades?.reduce((total: number, act: any) => total + (act.costo || 0), 0) || 0;
+//   return costoCategoria + costoActividades;
+// }
 
   editarSocio(socio: any) {
     this.editandoSocioId = socio.id;
@@ -361,6 +364,7 @@ getCostoTotal(socio: any): number {
       direccion: socio.direccion,
       telefono: socio.telefono,
       categoria: socio.categoria,
+      actividades: socio.actividades.map((act: any) => act.id_actividad)
     });
   }
 
