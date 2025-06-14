@@ -8,6 +8,7 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, HttpClientModule],
   templateUrl: './actividad.component.html',
+  styleUrls: ['./actividad.component.css']
 })
 export class ActividadComponent implements OnInit {
   formActividad: FormGroup;
@@ -69,8 +70,6 @@ categoriasDisponibles = [
   ngOnInit(): void {
     this.cargarActividades();
   }
-
-
   
   cargarActividades(): void {
     this.http.get<any[]>('http://localhost:3000/api/actividades').subscribe(data => {
