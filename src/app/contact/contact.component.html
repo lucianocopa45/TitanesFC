@@ -1,0 +1,87 @@
+<div class="registro-profesores-container">
+  <h1 class="titulo-principal">Contacto</h1>
+
+  <!-- Formulario de contacto -->
+  <form [formGroup]="mensajeForm" class="formulario">
+    <h2>¿Queres comunicarte con nosotros?</h2>
+    
+    <div class="campo">
+      <label for="nombre">Nombre*</label>
+      <input id="nombre" formControlName="nombre" placeholder="Ingrese su nombre" />
+      <div *ngIf="mensajeForm.get('nombre')?.touched && mensajeForm.get('nombre')?.invalid">
+    <small *ngIf="mensajeForm.get('nombre')?.errors?.['required']">El nombre es obligatorio.</small>
+    <small *ngIf="mensajeForm.get('nombre')?.errors?.['pattern']">Solo se permiten letras y espacios.</small>
+  </div>
+    </div>
+
+    <div class="campo">
+      <label for="apellido">Apellido*</label>
+      <input id="apellido" formControlName="apellido" placeholder="Ingrese su apellido" />
+
+      <div *ngIf="mensajeForm.get('apellido')?.touched && mensajeForm.get('apellido')?.invalid">
+        <small *ngIf="mensajeForm.get('apellido')?.errors?.['required']">El apellido es obligatorio.</small>
+        <small *ngIf="mensajeForm.get('apellido')?.errors?.['pattern']">Solo se permiten letras y espacios.</small>
+      </div>
+    </div>
+
+    <div class="campo">
+      <label for="fechaNacimiento">Fecha de nacimiento*</label>
+      <input id="fechaNacimiento" type="date" formControlName="fechaNacimiento" placeholder="dd/mm/aaaa" />
+
+      <div *ngIf="mensajeForm.get('fechaNacimiento')?.touched && mensajeForm.get('fechaNacimiento')?.invalid">
+        <small *ngIf="mensajeForm.get('fechaNacimiento')?.errors?.['required']">La fecha de nacimiento es obligatoria.</small>
+      </div>
+    </div>
+
+    <div class="campo">
+      <label for="correo">E-mail*</label>
+      <input id="correo" formControlName="correo" placeholder="Ingrese su correo electrónico" />
+
+        <div *ngIf="mensajeForm.get('correo')?.touched && mensajeForm.get('correo')?.invalid">
+          <small *ngIf="mensajeForm.get('correo')?.errors?.['required']">El correo electrónico es obligatorio.</small>
+          <small *ngIf="mensajeForm.get('correo')?.errors?.['email']">El correo electrónico no es válido.</small>
+         </div>
+    </div>
+
+    <div class="campo">
+      <label for="telefono">Teléfono*</label>
+      <input id="telefono" formControlName="telefono" placeholder="Ingrese su teléfono" />
+       <div *ngIf="mensajeForm.get('telefono')?.touched && mensajeForm.get('telefono')?.invalid">
+    <small *ngIf="mensajeForm.get('telefono')?.errors?.['required']">El teléfono es obligatorio.</small>
+    <small *ngIf="mensajeForm.get('telefono')?.errors?.['pattern']">Debe tener entre 7 y 15 dígitos numéricos.</small>
+  </div>
+    </div>
+
+  <div class="campo">
+    <label for="motivo">Motivo de contacto*</label>
+    <select id="motivo" formControlName="motivo">
+      <option value="" disabled selected>Seleccione el motivo de contacto</option>
+      <option *ngFor="let motivo of motivos" [value]="motivo">{{ motivo }}</option>
+    </select>
+    <div *ngIf="mensajeForm.get('motivo')?.touched && mensajeForm.get('motivo')?.invalid">
+      <small *ngIf="mensajeForm.get('motivo')?.errors?.['required']">El motivo de contacto es obligatorio.</small>
+    </div>
+  </div>
+
+
+  <div class="campo">
+    <label for="mensaje">Mensaje*</label>
+    <textarea id="mensaje" formControlName="mensaje" placeholder="Ingrese el mensaje"></textarea>
+
+      <div *ngIf="mensajeForm.get('mensaje')?.touched && mensajeForm.get('mensaje')?.invalid">
+        <small *ngIf="mensajeForm.get('mensaje')?.errors?.['required']">El mensaje es obligatorio.</small>
+        <small *ngIf="mensajeForm.get('mensaje')?.errors?.['minlength']">El mensaje debe tener al menos 10 caracteres.</small>
+        <small *ngIf="mensajeForm.get('mensaje')?.errors?.['maxlength']">El mensaje no puede tener más de 500 caracteres.</small>
+     </div>
+  </div>
+
+
+    <div class="botones botones-duo">
+            <button type="button" (click)="LimpiarFormulario()" class="btn-gris">Limpiar</button>
+      <button type="button" (click)="submit()" class="btn-rojo">Enviar</button>
+
+    </div>
+  </form>
+
+  
+</div>
