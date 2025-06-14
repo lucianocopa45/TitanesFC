@@ -9,27 +9,44 @@
         </div>
         <div class="mb-3">
           <label>Categoría</label>
-          <input formControlName="categoria" class="form-control" />
+          <select formControlName="categoria" class="form-control">
+            <option value="">Seleccione una categoría</option>
+            <option *ngFor="let cat of categoriasDisponibles" [value]="cat">{{ cat }}</option>
+          </select>
         </div>
         <div class="mb-3">
           <label>Día</label>
-          <input formControlName="dia" class="form-control" />
+          <select formControlName="dia" class="form-control">
+            <option value="" disabled selected>Seleccione un día</option>
+            <option *ngFor="let d of dias" [value]="d">{{ d }}</option>
+          </select>
         </div>
+
         <div class="mb-3">
           <label>Horario</label>
-          <input formControlName="horario" class="form-control" />
+          <select formControlName="horario" class="form-control">
+            <option value="">Seleccione un rango horario</option>
+            <option *ngFor="let h of horariosDisponibles" [value]="h">{{ h }}</option>
+          </select>
         </div>
         <div class="mb-3">
           <label>Lugar</label>
-          <input formControlName="lugar" class="form-control" />
+          <select formControlName="categoria" class="form-control">
+            <option value="">Seleccione un lugar</option>
+            <option *ngFor="let cat of lugaresDisponibles" [value]="cat">{{ cat }}</option>
+          </select>
         </div>
         <div class="mb-3">
           <label>Precio</label>
-          <input type="number" formControlName="precio" class="form-control" />
+          <div class="input-group">
+            <span class="input-group-text">$</span>
+            <input type="number" formControlName="precio" class="form-control" min="0" step="0.01" placeholder="0.00" />
+          </div>
         </div>
         <div class="mb-3">
           <label>Cupo Máximo</label>
-          <input type="number" formControlName="cupo_maximo" class="form-control" />
+          <input type="number" formControlName="cupo_maximo" class="form-control" min="1" step="1"
+            placeholder="1 o más" />
         </div>
         <button class="boton-familiaActividad" type="submit">
           {{ editando ? 'Actualizar' : 'Registrar' }}
