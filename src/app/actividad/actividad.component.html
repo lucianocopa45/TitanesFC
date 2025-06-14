@@ -1,1 +1,74 @@
-<p>actividad works!</p>
+<div class="container text-white">
+  <div class="card-historia">
+    <div class="historia-texto">
+      <h1>Gestión de Actividades</h1>
+      <form [formGroup]="formActividad" (ngSubmit)="guardarActividad()">
+        <div class="mb-3">
+          <label>Nombre</label>
+          <input formControlName="nombre" class="form-control" />
+        </div>
+        <div class="mb-3">
+          <label>Categoría</label>
+          <input formControlName="categoria" class="form-control" />
+        </div>
+        <div class="mb-3">
+          <label>Día</label>
+          <input formControlName="dia" class="form-control" />
+        </div>
+        <div class="mb-3">
+          <label>Horario</label>
+          <input formControlName="horario" class="form-control" />
+        </div>
+        <div class="mb-3">
+          <label>Lugar</label>
+          <input formControlName="lugar" class="form-control" />
+        </div>
+        <div class="mb-3">
+          <label>Precio</label>
+          <input type="number" formControlName="precio" class="form-control" />
+        </div>
+        <div class="mb-3">
+          <label>Cupo Máximo</label>
+          <input type="number" formControlName="cupo_maximo" class="form-control" />
+        </div>
+        <button class="boton-familiaActividad" type="submit">
+          {{ editando ? 'Actualizar' : 'Registrar' }}
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <div class="card-fc">
+    <table class="table table-dark table-striped">
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Categoría</th>
+          <th>Día</th>
+          <th>Horario</th>
+          <th>Lugar</th>
+          <th>Precio</th>
+          <th>Cupo</th>
+          <th>Anotados</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let actividad of actividades">
+          <td>{{ actividad.nombre }}</td>
+          <td>{{ actividad.categoria }}</td>
+          <td>{{ actividad.dia }}</td>
+          <td>{{ actividad.horario }}</td>
+          <td>{{ actividad.lugar }}</td>
+          <td>{{ actividad.precio }}</td>
+          <td>{{ actividad.cupo_maximo }}</td>
+          <td>{{ actividad.cantidad_anotados }}</td>
+          <td>
+            <button class="boton-familiaActividad" (click)="editarActividad(actividad)">Editar</button>
+            <button class="boton-familiaSocio" (click)="eliminarActividad(actividad.id_actividad)">Eliminar</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
