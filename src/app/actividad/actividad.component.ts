@@ -1,14 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
-import { NgIf, NgFor } from '@angular/common';
+
 
 @Component({
   selector: 'app-actividad',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, NgIf, NgFor],
-  templateUrl: './actividad.component.html'
+  imports: [CommonModule, ReactiveFormsModule, HttpClientModule],
+  templateUrl: './actividad.component.html',
+  styleUrls: ['./actividad.component.css'],
 })
 export class ActividadComponent implements OnInit {
   formActividad: FormGroup;
