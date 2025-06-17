@@ -77,7 +77,56 @@ app.post('/api/actividades', (req, res) => {
   });
 });
 
+app.put('/api/actividades/:id', (req, res) => {
+  const error = validarActividad(req.body);
+  if (error) return res.status(400).send(error);
 
+  const id = req.params.id;
+  const { nombre, categoria, dia, horario, lugar, precio, cupo_maximo } = req.body;
+  const query = `
+    UPDATE Actividad
+    SET nombre = ?, categoria = ?, dia = ?, horario = ?, lugar = ?, precio = ?, cupo_maximo = ?
+    OUTPUT INSERTED.*
+    WHERE id_actividad = ?
+  `;
+  const params = [nombre, categoria, dia, horario, lugar, precio, cupo_maximo, id];
+
+  sql.query(connectionString, query, params, (err, rows) => {
+    if (err) {
+      console.error('Error al modificar actividad:', err);
+      res.status(500).send('Error al modificar actividad');
+    } else if (rows.length === 0) {
+      res.status(404).send('Actividad no encontrada');
+    } else {
+      res.json(rows[0]);
+    }
+  });
+});
+
+app.delete('/api/actividades/:id', (req, res) => {
+  const id = req.params.id;
+  const verificarQuery = 'SELECT * FROM Actividad WHERE id_actividad = ?';
+  sql.query(connectionString, verificarQuery, [id], (err, rows) => {
+    if (err) {
+      console.error('Error al verificar actividad:', err);
+      return res.status(500).send('Error al verificar actividad');
+    }
+
+    if (rows.length === 0) {
+      return res.status(404).send('Actividad no encontrada');
+    }
+
+    const deleteQuery = 'DELETE FROM Actividad WHERE id_actividad = ?';
+    sql.query(connectionString, deleteQuery, [id], (err2) => {
+      if (err2) {
+        console.error('Error al eliminar actividad:', err2);
+        res.status(500).send('Error al eliminar actividad');
+      } else {
+        res.status(200).json({ mensaje: 'Actividad eliminada', actividad: rows[0] });
+      }
+    });
+  });
+});
 
 app.listen(PORT, () => {
   console.log(`Servidor backend escuchando en http://localhost:${PORT}`);
