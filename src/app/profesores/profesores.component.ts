@@ -384,23 +384,33 @@ export class ProfesorComponent implements OnInit {
 
 submit() {
   if (this.personalForm.valid && this.userForm.valid && this.matchPasswords()) {
-    const actividadesSeleccionadas = this.personalForm.value.actividades.map((id: number) =>
-      this.actividades.find(a => a.id_actividad === id)
-    );
+    const nuevoProfesor={
+      nombre: this.personalForm.value.nombre,
+      apellido: this.personalForm.value.apellido,
+      dni: this.personalForm.value.dni,
+      fecha_nacimiento: this.personalForm.value.fechaNacimiento,
+      direccion: this.personalForm.value.direccion,
+      telefono: this.personalForm.value.telefono,
+      especialidad: this.personalForm.value.especialidad,
+      actividades: this.personalForm.value.actividades,
+      email: this.userForm.value.correo,
+      contrasena: this.userForm.value.contrasena
 
-    const nuevoProfesor = {
-      id: ++this.ultimoId,
-      ...this.personalForm.value,
-      ...this.userForm.value,
-      actividades: actividadesSeleccionadas
     };
 
-    this.profesores.push(nuevoProfesor);
-    alert('¡Registro exitoso!');
+  this.profesorService.crearProfesor(nuevoProfesor).subscribe({
+    next: () =>{
+      alert('Registro exitoso!');
+      this.personalForm.reset();
+      this.userForm.reset();
+      this.step = 1;
+      this.cargarProfesores();
 
-    this.personalForm.reset();
-    this.userForm.reset();
-    this.step = 1;
+    },
+    error: () =>{
+      alert('Error al registrar profesor');
+    }
+  });
   } else {
     alert('Revisá los campos y asegurate de que las contraseñas coincidan.');
   }
