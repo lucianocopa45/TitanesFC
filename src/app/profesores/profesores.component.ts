@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators, } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ProfesorService } from '../service/profesor.service';
+import { OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-profesores',
@@ -10,7 +11,7 @@ import { ProfesorService } from '../service/profesor.service';
   templateUrl: './profesores.component.html',
   styleUrls: ['./profesores.component.css'] 
 })
-export class ProfesorComponent {
+export class ProfesorComponent implements OnInit {
   step = 1;
   personalForm: FormGroup;
   userForm: FormGroup;
@@ -42,7 +43,9 @@ export class ProfesorComponent {
   'Coach deportivo',
 ];
 
-  actividades = [
+  actividades: any[] = [];
+
+ /* actividades = [
     {
       id_actividad: 1,
       nombre: 'Ajedrez',
@@ -275,7 +278,7 @@ export class ProfesorComponent {
     cupo_maximo: 15,
     cantidad_anotados: 7
   }
-  ];
+  ];*/
   
   constructor(private fb: FormBuilder, private profesorService: ProfesorService)
    {
@@ -309,6 +312,64 @@ export class ProfesorComponent {
   });
   }
 
+
+  //Cargar actividades 
+  ngOnInit(): void {
+      this.profesorService.getActividades().subscribe({
+        next: (res) =>{
+          this.actividades = res;
+        },
+        error:() =>{
+          alert('Error al cargar actividades');
+        }
+      });
+      this.cargarProfesores();
+  }
+
+    cargarProfesores(){
+      this.profesorService.getProfesores().subscribe(
+        res => this.profesores = this.agruparProfesores(res),
+        err => alert('Error al cargar profesores')
+      );
+    }
+
+    //Agrupamos las actividades por profesor
+   agruparProfesores(datos: any[]): any[] {
+    const agrupados: any ={};
+
+    for (const fila of datos){
+      const id = fila.id_profesor;
+     
+      if (!agrupados[id]) {
+      agrupados[id] = {
+        id: fila.id_profesor,
+        nombre: fila.nombre,
+        apellido: fila.apellido,
+        dni: fila.dni,
+        fechaNacimiento: fila.fecha_nacimiento,
+        direccion: fila.direccion,
+        telefono: fila.telefono,
+        especialidad: fila.especialidad,
+        actividades: [],
+        estado: fila.habilitado === 1 ? 'Activo' : 'Inactivo'
+      };
+    }
+    agrupados[id].actividades.push({
+      id_actividad: fila.id_actividad,
+      nombre: fila.nombre_actividad,
+      categoria: fila.categoria,
+      dia: fila.dia,
+      horario: fila.horario,
+      lugar: fila.lugar,
+      precio: fila.precio,
+      cupo_maximo: fila.cupo_maximo,
+      cantidad_anotados: fila.cantidad_anotados
+    });
+
+    }
+    return Object.values(agrupados);
+   }
+  
   nextStep() {
     if (this.personalForm.valid) {
       this.step = 2;
