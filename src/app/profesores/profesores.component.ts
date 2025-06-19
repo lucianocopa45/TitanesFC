@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
+import { ProfesorService } from '../service/profesor.service';
 
 @Component({
   selector: 'app-profesores',
@@ -276,7 +277,8 @@ export class ProfesorComponent {
   }
   ];
   
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private profesorService: ProfesorService)
+   {
     this.personalForm = this.fb.group({
       nombre: ['', [Validators.required, Validators.pattern('^[A-Za-zÁÉÍÓÚáéíóúÑñ ]+$')]],
       apellido: ['', [Validators.required, Validators.pattern('^[A-Za-zÁÉÍÓÚáéíóúÑñ ]+$')]],
