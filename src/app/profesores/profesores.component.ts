@@ -334,12 +334,12 @@ export class ProfesorComponent implements OnInit {
     }
 
     //Agrupamos las actividades por profesor
-   agruparProfesores(datos: any[]): any[] {
+    agruparProfesores(datos: any[]): any[] {
     const agrupados: any ={};
 
     for (const fila of datos){
       const id = fila.id_profesor;
-     
+  
       if (!agrupados[id]) {
       agrupados[id] = {
         id: fila.id_profesor,
@@ -368,7 +368,7 @@ export class ProfesorComponent implements OnInit {
 
     }
     return Object.values(agrupados);
-   }
+  }
   
   nextStep() {
     if (this.personalForm.valid) {
@@ -426,7 +426,7 @@ editarProfesor(profesor: any) {
     nombre: profesor.nombre,
     apellido: profesor.apellido,
     dni: profesor.dni,
-    fechaNacimiento: profesor.fechaNacimiento,
+    fechaNacimiento: profesor.fecha_nacimiento,
     direccion: profesor.direccion,
     telefono: profesor.telefono,
     especialidad: profesor.especialidad,
@@ -434,37 +434,49 @@ editarProfesor(profesor: any) {
     
   });
 
-  this.editandoProfesorId = profesor.id;
+  this.editandoProfesorId = profesor.id_profesor;
   this.mostrarFormulario = true;
 }
 
-eliminarProfesor(id: number) {
+eliminarProfesor(id_profesor: number) {
   const confirmado = confirm('¿Estás seguro de eliminar este profesor?');
   if (confirmado) {
-    this.profesores = this.profesores.filter(p => p.id !== id);
-    alert('Profesor eliminado correctamente');
+    this.profesorService.eliminarProfesor(id_profesor).subscribe({
+      next: () =>{
+        alert('Profesor eliminado correctamente'); 
+        this.cargarProfesores(); 
+      },
+      error: () =>{
+        alert('Error al eliminar profesor');
+      }
+    });
+    
   }
 }
 guardarEdicion() {
-  if (this.editForm.valid) {
-    const actividadesSeleccionadas = this.editForm.value.actividades.map((id: number) =>
-      this.actividades.find(a => a.id_actividad === id)
-    );
-
+  if (this.editForm.valid && this.editandoProfesorId !==null) {
     const profesorActualizado = {
-      ...this.profesores.find(p => p.id === this.editandoProfesorId),
-      ...this.editForm.value,
-      actividades: actividadesSeleccionadas
+      nombre: this.editForm.value.nombre,
+      apellido: this.editForm.value.apellido,
+      dni: this.editForm.value.dni,
+      fecha_nacimiento: this.editForm.value.fechaNacimiento,  
+      direccion: this.editForm.value.direccion,
+      telefono: this.editForm.value.telefono,
+      especialidad: this.editForm.value.especialidad,
+      actividades: this.editForm.value.actividades, 
       
     };
 
-    const index = this.profesores.findIndex(p => p.id === this.editandoProfesorId);
-    if (index !== -1) {
-      this.profesores[index] = profesorActualizado;
-    }
-
-    alert('Datos personales actualizados correctamente');
-    this.cancelarEdicion();
+    this.profesorService.actualizarProfesor(this.editandoProfesorId, profesorActualizado).subscribe({
+      next: () => {
+      alert('Datos personales actualizados correctamente');
+      this.cancelarEdicion();
+      this.cargarProfesores();
+      },
+      error: () => {
+        alert('Error al actualizar profesor');
+      }
+    }); 
   } else {
     alert('Por favor completá todos los campos del formulario de edición.');
   }
