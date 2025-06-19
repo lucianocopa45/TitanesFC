@@ -1,0 +1,40 @@
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class ProfesorService {
+private apiUrl = 'http://localhost:3000/api';
+
+
+  constructor(private http: HttpClient) { }
+
+  //METODO GET PARA OBTENER LISTA DE PROFESORES
+  getProfesores(): Observable<any[]>{
+    return this.http.get<any[]>(`$this.apiUrl}/profesores`);
+  }
+
+ //METODO PUT PARA CREAR PROFESOR
+ crearProfesor( profesor :any):Observable<any>{
+  return this.http.put(`$this.apiUrl}/profesores`, profesor);
+ }
+
+ //METODO DELETE PARA ELIMINAR PROFESOR
+eliminarProfesor(id: number): Observable<any>{
+  return this.http.delete(`${this.apiUrl}/profesores/${id}`);
+}
+
+//METODO PUT PARA ACTUALIZAR PROFESORES
+actualizarProfesor(id:number, profesor: any):Observable<any>{
+  return this.http.put(`$this.apiUrl/profesores/${id}`, profesor);
+}
+
+
+
+
+}
+
+
+
