@@ -426,7 +426,7 @@ editarProfesor(profesor: any) {
     nombre: profesor.nombre,
     apellido: profesor.apellido,
     dni: profesor.dni,
-    fechaNacimiento: profesor.fecha_nacimiento,
+    fechaNacimiento: this.formatearFecha(profesor.fecha_nacimiento),
     direccion: profesor.direccion,
     telefono: profesor.telefono,
     especialidad: profesor.especialidad,
@@ -436,6 +436,15 @@ editarProfesor(profesor: any) {
 
   this.editandoProfesorId = profesor.id_profesor;
   this.mostrarFormulario = true;
+}
+
+formatearFecha(fechaOriginal: string): string {
+  const fecha = new Date(fechaOriginal);
+  const year = fecha.getFullYear();
+  const month =String(fecha.getMonth() + 1).padStart(2, '0');
+  const day = String(fecha.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+
 }
 
 eliminarProfesor(id_profesor: number) {
