@@ -50,7 +50,6 @@ export class SociosComponent {
       cupo_maximo: 15,
       cantidad_anotados: 10
     },
-
     {
       id_actividad: 3,
       nombre: 'Fútbol Infantil',
@@ -262,7 +261,6 @@ export class SociosComponent {
     }
   ];
 
-
   constructor(private fb: FormBuilder) {
     this.personalForm = this.fb.group({
       nombre: ['', [Validators.required, Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/)]],
@@ -288,7 +286,7 @@ export class SociosComponent {
       fechaNacimiento: ['', Validators.required],
       direccion: ['', Validators.required],
       telefono: ['', Validators.required],
-      categoria: [null, Validators.required], // Initialize with null
+      categoria: [null, Validators.required], 
       actividades: [[]]
     });
   }
@@ -344,6 +342,10 @@ export class SociosComponent {
     return socio.actividades?.reduce((total: number, act: any) => total + (act.precio || 0), 0) || 0;
   }
 
+  getSelectedActivityNames(socio: any): string {
+    return socio.actividades?.map((act: any) => act.nombre).join(', ') || 'Ninguna';
+  }
+
   getCostoTotal(socio: any): number {
     const costoCategoria = socio.categoria?.costo || 0;
     const costoActividades = this.getCostoActividades(socio);
@@ -353,22 +355,20 @@ export class SociosComponent {
   editarSocio(socio: any) {
     this.editandoSocioId = socio.id;
 
-    // Find the actual category object from the categories array
     const selectedCategory = this.categorias.find(cat => cat.nombre === socio.categoria.nombre);
 
-    // Map the stored activity objects to their IDs for the select element
+  
     const selectedActivityIds = socio.actividades.map((act: any) => act.id_actividad);
 
-
-    this.editForm.patchValue({ // Use patchValue for partial updates
+    this.editForm.patchValue({ 
       nombre: socio.nombre,
       apellido: socio.apellido,
       dni: socio.dni,
       fechaNacimiento: socio.fechaNacimiento,
       direccion: socio.direccion,
       telefono: socio.telefono,
-      categoria: selectedCategory, // Set the actual category object
-      actividades: selectedActivityIds // Set the array of activity IDs
+      categoria: selectedCategory, 
+      actividades: selectedActivityIds 
     });
   }
 
@@ -378,7 +378,7 @@ export class SociosComponent {
       if (index !== -1) {
         const updatedSocioData = this.editForm.value;
 
-        // Map the selected activity IDs back to full activity objects
+        
         const updatedActivities = this.actividades.filter(act =>
           updatedSocioData.actividades.includes(act.id_actividad)
         );
@@ -386,7 +386,7 @@ export class SociosComponent {
         this.socios[index] = {
           ...this.socios[index],
           ...updatedSocioData,
-          actividades: updatedActivities // Assign the full activity objects
+          actividades: updatedActivities
         };
         this.editandoSocioId = null;
         this.editForm.reset();
