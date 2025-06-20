@@ -1,0 +1,128 @@
+<div class="container">
+    <div class="card-general animate-fade-in">
+      <h1>¡Bienvenido, Juan Pérez!</h1>
+      <p>Puedes registrar socios y profesores</p>
+    </div>
+
+    <div class="row">
+      <!-- Socios -->
+      <div class="col">
+        <div class="card stat-card animate-up">
+          <div class="card-header">
+            <i class="bi bi-people icon-circle icon-gradient"></i>
+            <h5>Socios Activos</h5>
+          </div>
+          <div class="card-body">
+            <div class="value">248</div>
+            <div class="change positive">▲ 12%</div>
+          </div>
+          <p class="small">Comparado al mes anterior</p>
+        </div>
+      </div>
+
+      <!-- Profesores -->
+      <div class="col">
+        <div class="card stat-card animate-up" style="animation-delay:.1s">
+          <div class="card-header">
+            <i class="bi bi-person-badge icon-circle icon-gradient-secondary"></i>
+            <h5>Profesores</h5>
+          </div>
+          <div class="card-body">
+            <div class="value">16</div>
+            <div class="change positive">▲ 2</div>
+          </div>
+          <p class="small">Nuevos este mes</p>
+        </div>
+      </div>
+
+      <!-- Actividades -->
+      <div class="col">
+        <div class="card stat-card animate-up" style="animation-delay:.2s">
+          <div class="card-header">
+            <i class="bi bi-activity icon-circle icon-gradient"></i>
+            <h5>Actividades</h5>
+          </div>
+          <div class="card-body">
+            <div class="value">24</div>
+            <div class="change neutral">▬ 0%</div>
+          </div>
+          <p class="small">Actividades vigentes</p>
+        </div>
+      </div>
+
+      <!-- Inscripciones -->
+      <div class="col">
+        <div class="card stat-card animate-up" style="animation-delay:.3s">
+          <div class="card-header">
+            <i class="bi bi-journal-check icon-circle icon-gradient-secondary"></i>
+            <h5>Inscripciones</h5>
+          </div>
+          <div class="card-body">
+            <div class="value">37</div>
+            <div class="change positive">▲ 18%</div>
+          </div>
+          <p class="small">Últimos 7 días</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid">
+      <div class="chart-container animate-fade-in">
+        <h3>Distribución de Socios por Actividad</h3>
+        <!-- SVG con colores vivos y barras redondeadas -->
+           <svg viewBox="0 0 400 200" width="100%" height="200">
+        <!-- Ejes -->
+        <line x1="40" y1="160" x2="380" y2="160" stroke="#4B5563" stroke-width="1" />
+        <line x1="40" y1="20" x2="40" y2="160" stroke="#4B5563" stroke-width="1" />
+        <!-- Barras -->
+        <rect x="60" y="60" width="30" height="100" fill="#1A56DB" />
+        <rect x="110" y="80" width="30" height="80" fill="#1A56DB" />
+        <rect x="160" y="40" width="30" height="120" fill="#1A56DB" />
+        <rect x="210" y="90" width="30" height="70" fill="#1A56DB" />
+        <rect x="260" y="70" width="30" height="90" fill="#1A56DB" />
+        <rect x="310" y="110" width="30" height="50" fill="#1A56DB" />
+        <!-- Etiquetas -->
+        <text x="75" y="175" text-anchor="middle" fill="#ffffff" font-size="10">Fútbol</text>
+        <text x="125" y="175" text-anchor="middle" fill="#ffffff" font-size="10">Básquet</text>
+        <text x="175" y="175" text-anchor="middle" fill="#ffffff" font-size="10">Natación</text>
+        <text x="225" y="175" text-anchor="middle" fill="#ffffff" font-size="10">Tenis</text>
+        <text x="275" y="175" text-anchor="middle" fill="#ffffff" font-size="10">Vóley</text>
+        <text x="325" y="175" text-anchor="middle" fill="#ffffff" font-size="10">Hockey</text>
+        <!-- Escala -->
+        <text x="35" y="160" text-anchor="end" fill="#ffffff" font-size="10">0</text>
+        <text x="35" y="120" text-anchor="end" fill="#ffffff" font-size="10">50</text>
+        <text x="35" y="80" text-anchor="end" fill="#ffffff" font-size="10">100</text>
+        <text x="35" y="40" text-anchor="end" fill="#ffffff" font-size="10">150</text>
+      </svg>
+      </div>
+      <div class="recent-card animate-fade-in">
+        <div class="recent-header">
+          <h5>Inscripciones Recientes</h5>
+          <a class="btn nav-link" routerLink="/socios" >Ver todas</a>
+        </div>
+      <ul>
+        <!-- @for (i of inscripciones; track $index) {
+        <li class="listado">
+          <div class="inscripcion-row">
+              <p>{{ i.nombre }}</p>
+              <small>{{ i.actividad }}</small>
+
+            <small>{{ i.fecha }}</small>
+          </div>
+        </li>
+      } -->
+    @for (inscripcion  of inscripcionActivaSocios; track $index) {
+    <li class="listado">
+      <div class="inscripcion-row">
+    <p>{{ inscripcion.nombreSocio }} {{ inscripcion.apellidoSocio }}</p>
+    <small>{{ inscripcion.nombreActividad }}</small>
+    <small>{{ inscripcion.fecha | date:'shortDate' }}</small>
+      </div>
+    </li>
+  }
+      </ul>
+    
+      </div>
+    </div>
+  </div>
+
