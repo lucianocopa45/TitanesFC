@@ -8,23 +8,30 @@
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
       <div class="navegador navbar-nav">
         <a class="nav-link"
-           routerLink="/"
-           routerLinkActive="active"
-           [routerLinkActiveOptions]="{ exact: true }">
-           Inicio
-        </a>
-        <a class="nav-link"
-           routerLink="/socios"
-           routerLinkActive="active">
-           Socios
-        </a>
-        <a class="nav-link"
-           routerLink="/profesores"
-           routerLinkActive="active">
-           Profesores
-        </a>
-        <a class="nav-link" routerLink="/reportes" routerLinkActive="active">Reportes</a>
-        <!-- <a class="nav-link" routerLink="/miPerfil" routerLinkActive="active">Mi Perfil</a> -->
+    routerLink="/home"
+    routerLinkActive="active" 
+    [routerLinkActiveOptions]="{ exact: true }">
+    Panel
+</a>
+
+<a class="nav-link"
+    routerLink="/home/socios"
+    routerLinkActive="active">
+    Socios
+</a>
+
+<a class="nav-link"
+    routerLink="/home/profesores"
+    routerLinkActive="active">
+    Profesores
+</a>
+
+<a class="nav-link"
+    routerLink="/home/reportes"
+    routerLinkActive="active">
+    Reportes
+</a>
+
       </div>
     </div>
   </div>
