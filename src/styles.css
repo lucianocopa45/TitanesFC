@@ -7,6 +7,7 @@
     text-decoration: none;
 
 }
+
 html, body {
   margin: 0;
   padding: 0;
@@ -18,9 +19,52 @@ app-root {
   flex-direction: column;
   min-height: 100vh;
 }
-
-main {
-  flex: 1;
-  padding: 1rem;
-  background-color: #0A1930;
+.titulo-titanes, .subtitulo-titanes{
+font-size: 30px;
+}
+.subtitulo-titanes{
+    color: blue;
+    font-size: 20px;
+}
+.redes{
+    padding: 20px;
+    display: flex;
+    gap: 10px;
+}
+.bi{
+    color: black;
+    transition: color 0.5s;
+}
+.bi:hover{
+    color: aliceblue;
+}
+h1{
+    color: black;
+}
+.footer-titanes{
+    background-color: #B22222;
+    color: white;
+}
+.card-divGeneral{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 20px;
+}
+.divisor-cards{
+  border-left: 2px solid rgb(0, 37, 247);
+  height: 100px;
+  width: 0;
+}
+small{
+    display: flex;
+    padding: 5px;
+    justify-content: center;
+}
+.nav-enlacesRapidos{
+    color: black;
+    transition: 0.3s;
+}
+.nav-enlacesRapidos:hover{
+    color: aliceblue;
 }
