@@ -6,10 +6,10 @@ import { ProfesorService } from '../service/profesor.service';
 import { OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-profesores',
+  selector: 'app-profesor',
   imports: [CommonModule, ReactiveFormsModule],
-  templateUrl: './profesores.component.html',
-  styleUrls: ['./profesores.component.css'] 
+  templateUrl: './profesor.component.html',
+  styleUrl: './profesor.component.css'
 })
 export class ProfesorComponent implements OnInit {
   step = 1;
