@@ -10,13 +10,13 @@
   align-items: center;
 }
 
-/* Tarjeta del formulario */
+/* Formulario angosto, como estaba */
 .actividad-card {
   background-color: rgba(0, 51, 102, 0.85);
   padding: 20px;
   border-radius: 12px;
   box-shadow: 0 0 10px rgba(255, 0, 0, 0.4);
-  margin-bottom: 20px;
+  margin-bottom: 25px;
   width: 100%;
   max-width: 500px;
   transition: transform 0.3s ease;
@@ -29,17 +29,16 @@
 .actividad-card h1 {
   text-align: center;
   color: #ffffff;
-  margin-bottom: 15px;
+  margin-bottom: 20px;
 }
 
-/* Campos del formulario */
 .campo {
-  margin-bottom: 12px;
+  margin-bottom: 15px;
 }
 
 .campo label {
   display: block;
-  margin-bottom: 4px;
+  margin-bottom: 5px;
   font-weight: bold;
   color: #ffffff;
 }
@@ -47,7 +46,7 @@
 .input-texto,
 .input-select {
   width: 100%;
-  padding: 8px;
+  padding: 9px;
   border-radius: 6px;
   border: 1px solid #0059b3;
   background-color: #00264d;
@@ -81,8 +80,8 @@
   width: 100%;
   background: linear-gradient(90deg, #ff3c3c, #ff5959);
   color: #fff;
-  padding: 10px;
-  font-size: 15px;
+  padding: 11px;
+  font-size: 16px;
   border: none;
   border-radius: 6px;
   cursor: pointer;
@@ -94,10 +93,11 @@
   transform: scale(1.03);
 }
 
-/* Tabla de actividades */
+/* Tabla más ancha */
 .actividad-tabla {
   width: 100%;
-  max-width: 900px;
+  max-width: 1300px; /* Más ancha que antes */
+  overflow-x: auto;
 }
 
 .actividad-tabla table {
@@ -105,20 +105,20 @@
   border-collapse: collapse;
   border-radius: 8px;
   overflow: hidden;
-  box-shadow: 0 0 8px rgba(255, 0, 0, 0.3);
+  box-shadow: 0 0 10px rgba(255, 0, 0, 0.3);
 }
 
 .actividad-tabla th {
   background: #003366;
   color: #ffffff;
-  padding: 8px;
+  padding: 10px;
   text-transform: uppercase;
   font-weight: bold;
 }
 
 .actividad-tabla td {
   background: rgba(0, 38, 77, 0.9);
-  padding: 8px;
+  padding: 10px;
   text-align: center;
   border-bottom: 1px solid #00264d;
 }
@@ -130,12 +130,12 @@
 .boton-accion {
   background-color: #ff3c3c;
   border: none;
-  padding: 5px 10px;
+  padding: 6px 12px;
   border-radius: 5px;
   color: #fff;
   font-weight: bold;
   cursor: pointer;
-  margin: 1px;
+  margin: 2px;
   transition: background 0.3s;
 }
 
