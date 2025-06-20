@@ -303,6 +303,7 @@ export class SociosComponent {
       this.step = 2;
     } else {
       this.personalForm.markAllAsTouched();
+      alert('Por favor, completá todos los campos requeridos del paso 1.');
     }
   }
 
@@ -333,6 +334,7 @@ export class SociosComponent {
     };
 
     this.socios.push(nuevoSocio);
+    alert('¡Registro exitoso!');
     this.personalForm.reset();
     this.userForm.reset();
     this.step = 1;
