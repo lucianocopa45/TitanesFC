@@ -1,3 +1,4 @@
+<div class ="main-socio-container">
 <h1 class="titulo-principal">Registro de Socios</h1>
 
 <div class="pasos-indicador">
@@ -76,12 +77,13 @@
     <small>*Podés seleccionar más de una con Ctrl o Cmd</small>
   </div>
 
-
   <div class="botones">
     <button type="button" (click)="nextStep()" class="btn-rojo">Continuar</button>
   </div>
 </form>
 
+
+<!-- Paso 2: Datos de Usuario -->
 <form *ngIf="step === 2 && editandoSocioId === null" [formGroup]="userForm" class="formulario">
   <h2>Paso 2: Datos de Usuario</h2>
 
@@ -116,8 +118,9 @@
     <button type="button" (click)="submit()" class="btn-rojo">Confirmar Registro</button>
   </div>
 </form>
+</div>
 
-
+<!-- Tabla de socios registrados -->
 <div class="tabla-container" *ngIf="socios.length > 0">
   <table>
     <thead>
@@ -131,6 +134,7 @@
         <th>Teléfono</th>
         <th>Categoría</th>
         <th>Costo Categoría</th>
+        <th>Actividades Seleccionadas</th>
         <th>Costo Actividades</th>
         <th>Costo Total</th>
         <th>Estado</th>
@@ -148,8 +152,9 @@
         <td>{{ s.telefono }}</td>
         <td>{{ s.categoria.nombre }}</td>
         <td>${{ s.categoria.costo }}</td>
+        <td>{{ getSelectedActivityNames(s) }}</td>
         <td>${{ getCostoActividades(s) }}</td>
-        <td>{{ getCostoTotal(s) | currency:'ARS' }}</td>
+        <td>{{ getCostoTotal(s) | currency:'$' }}</td>
         <td><span class="estado-activo">Activo</span></td>
         <td>
           <button class="btn-editar" (click)="editarSocio(s)">✏️</button>
@@ -160,7 +165,7 @@
   </table>
 </div>
 
-<div class="editar-profesor-container" *ngIf="editandoSocioId !== null">
+<div class="editar-socio-container" *ngIf="editandoSocioId !== null">
   <h1>Editar Datos Personales del Socio</h1>
   <form [formGroup]="editForm" class="formulario">
     <div class="campo"><label>Nombre*</label><input formControlName="nombre" /></div>
