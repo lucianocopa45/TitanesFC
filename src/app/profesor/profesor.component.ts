@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
+import { ProfesorService } from '../service/profesor.service';
+import { OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-profesor',
@@ -9,7 +11,7 @@ import { ReactiveFormsModule } from '@angular/forms';
   templateUrl: './profesor.component.html',
   styleUrl: './profesor.component.css'
 })
-export class ProfesorComponent {
+export class ProfesorComponent implements OnInit {
   step = 1;
   personalForm: FormGroup;
   userForm: FormGroup;
@@ -41,7 +43,9 @@ export class ProfesorComponent {
   'Coach deportivo',
 ];
 
-  actividades = [
+  actividades: any[] = [];
+
+ /* actividades = [
     {
       id_actividad: 1,
       nombre: 'Ajedrez',
@@ -274,9 +278,10 @@ export class ProfesorComponent {
     cupo_maximo: 15,
     cantidad_anotados: 7
   }
-  ];
+  ];*/
   
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private profesorService: ProfesorService)
+   {
     this.personalForm = this.fb.group({
       nombre: ['', [Validators.required, Validators.pattern('^[A-Za-zÁÉÍÓÚáéíóúÑñ ]+$')]],
       apellido: ['', [Validators.required, Validators.pattern('^[A-Za-zÁÉÍÓÚáéíóúÑñ ]+$')]],
@@ -307,6 +312,64 @@ export class ProfesorComponent {
   });
   }
 
+
+  //Cargar actividades 
+  ngOnInit(): void {
+      this.profesorService.getActividades().subscribe({
+        next: (res) =>{
+          this.actividades = res;
+        },
+        error:() =>{
+          alert('Error al cargar actividades');
+        }
+      });
+      this.cargarProfesores();
+  }
+
+    cargarProfesores(){
+      this.profesorService.getProfesores().subscribe(
+        res => this.profesores = this.agruparProfesores(res),
+        err => alert('Error al cargar profesores')
+      );
+    }
+
+    //Agrupamos las actividades por profesor
+    agruparProfesores(datos: any[]): any[] {
+    const agrupados: any ={};
+
+    for (const fila of datos){
+      const id = fila.id_profesor;
+  
+      if (!agrupados[id]) {
+      agrupados[id] = {
+        id: fila.id_profesor,
+        nombre: fila.nombre,
+        apellido: fila.apellido,
+        dni: fila.dni,
+        fechaNacimiento: fila.fecha_nacimiento,
+        direccion: fila.direccion,
+        telefono: fila.telefono,
+        especialidad: fila.especialidad,
+        actividades: [],
+        estado: fila.habilitado === 1 ? 'Activo' : 'Inactivo'
+      };
+    }
+    agrupados[id].actividades.push({
+      id_actividad: fila.id_actividad,
+      nombre: fila.nombre_actividad,
+      categoria: fila.categoria,
+      dia: fila.dia,
+      horario: fila.horario,
+      lugar: fila.lugar,
+      precio: fila.precio,
+      cupo_maximo: fila.cupo_maximo,
+      cantidad_anotados: fila.cantidad_anotados
+    });
+
+    }
+    return Object.values(agrupados);
+  }
+  
   nextStep() {
     if (this.personalForm.valid) {
       this.step = 2;
@@ -321,23 +384,33 @@ export class ProfesorComponent {
 
 submit() {
   if (this.personalForm.valid && this.userForm.valid && this.matchPasswords()) {
-    const actividadesSeleccionadas = this.personalForm.value.actividades.map((id: number) =>
-      this.actividades.find(a => a.id_actividad === id)
-    );
+    const nuevoProfesor={
+      nombre: this.personalForm.value.nombre,
+      apellido: this.personalForm.value.apellido,
+      dni: this.personalForm.value.dni,
+      fecha_nacimiento: this.personalForm.value.fechaNacimiento,
+      direccion: this.personalForm.value.direccion,
+      telefono: this.personalForm.value.telefono,
+      especialidad: this.personalForm.value.especialidad,
+      actividades: this.personalForm.value.actividades,
+      email: this.userForm.value.correo,
+      contrasena: this.userForm.value.contrasena
 
-    const nuevoProfesor = {
-      id: ++this.ultimoId,
-      ...this.personalForm.value,
-      ...this.userForm.value,
-      actividades: actividadesSeleccionadas
     };
 
-    this.profesores.push(nuevoProfesor);
-    alert('¡Registro exitoso!');
+  this.profesorService.crearProfesor(nuevoProfesor).subscribe({
+    next: () =>{
+      alert('Registro exitoso!');
+      this.personalForm.reset();
+      this.userForm.reset();
+      this.step = 1;
+      this.cargarProfesores();
 
-    this.personalForm.reset();
-    this.userForm.reset();
-    this.step = 1;
+    },
+    error: () =>{
+      alert('Error al registrar profesor');
+    }
+  });
   } else {
     alert('Revisá los campos y asegurate de que las contraseñas coincidan.');
   }
@@ -353,7 +426,7 @@ editarProfesor(profesor: any) {
     nombre: profesor.nombre,
     apellido: profesor.apellido,
     dni: profesor.dni,
-    fechaNacimiento: profesor.fechaNacimiento,
+    fechaNacimiento: profesor.fecha_nacimiento,
     direccion: profesor.direccion,
     telefono: profesor.telefono,
     especialidad: profesor.especialidad,
@@ -361,37 +434,49 @@ editarProfesor(profesor: any) {
     
   });
 
-  this.editandoProfesorId = profesor.id;
+  this.editandoProfesorId = profesor.id_profesor;
   this.mostrarFormulario = true;
 }
 
-eliminarProfesor(id: number) {
+eliminarProfesor(id_profesor: number) {
   const confirmado = confirm('¿Estás seguro de eliminar este profesor?');
   if (confirmado) {
-    this.profesores = this.profesores.filter(p => p.id !== id);
-    alert('Profesor eliminado correctamente');
+    this.profesorService.eliminarProfesor(id_profesor).subscribe({
+      next: () =>{
+        alert('Profesor eliminado correctamente'); 
+        this.cargarProfesores(); 
+      },
+      error: () =>{
+        alert('Error al eliminar profesor');
+      }
+    });
+    
   }
 }
 guardarEdicion() {
-  if (this.editForm.valid) {
-    const actividadesSeleccionadas = this.editForm.value.actividades.map((id: number) =>
-      this.actividades.find(a => a.id_actividad === id)
-    );
-
+  if (this.editForm.valid && this.editandoProfesorId !==null) {
     const profesorActualizado = {
-      ...this.profesores.find(p => p.id === this.editandoProfesorId),
-      ...this.editForm.value,
-      actividades: actividadesSeleccionadas
+      nombre: this.editForm.value.nombre,
+      apellido: this.editForm.value.apellido,
+      dni: this.editForm.value.dni,
+      fecha_nacimiento: this.editForm.value.fechaNacimiento,  
+      direccion: this.editForm.value.direccion,
+      telefono: this.editForm.value.telefono,
+      especialidad: this.editForm.value.especialidad,
+      actividades: this.editForm.value.actividades, 
       
     };
 
-    const index = this.profesores.findIndex(p => p.id === this.editandoProfesorId);
-    if (index !== -1) {
-      this.profesores[index] = profesorActualizado;
-    }
-
-    alert('Datos personales actualizados correctamente');
-    this.cancelarEdicion();
+    this.profesorService.actualizarProfesor(this.editandoProfesorId, profesorActualizado).subscribe({
+      next: () => {
+      alert('Datos personales actualizados correctamente');
+      this.cancelarEdicion();
+      this.cargarProfesores();
+      },
+      error: () => {
+        alert('Error al actualizar profesor');
+      }
+    }); 
   } else {
     alert('Por favor completá todos los campos del formulario de edición.');
   }

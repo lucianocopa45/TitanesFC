@@ -65,7 +65,7 @@
     <div class="campo">
       <label for="actividades">Actividad*</label>
       <select id="actividades" formControlName="actividades" multiple title="actividades">
-  <option *ngFor="let actividad of actividades" [value]="actividad.id_actividad">
+  <option *ngFor="let actividad of actividades" [value]="actividad.nombre">
     {{ actividad.nombre }} - {{ actividad.dia }} - {{ actividad.horario }} - {{ actividad.lugar }} (Cupo: {{ actividad.cupo_maximo }})
   </option>
 </select>
