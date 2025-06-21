@@ -15,7 +15,7 @@ export class ActividadComponent implements OnInit {
   actividades: any[] = [];
   editando = false;
   idEditando: number | null = null;
-  dias = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábados', 'Domingos'];
+  dias = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
   horarios = ['08:00', '10:00', '12:00', '14:00', '16:00', '18:00', '20:00'];
 
   constructor(private fb: FormBuilder, private http: HttpClient) {
@@ -33,6 +33,7 @@ export class ActividadComponent implements OnInit {
 //CATEGORIAS DISPONIBLES
 lugaresDisponibles = [
   'Cancha 01',
+  'Cancha 1',
   'Cancha 2',
   'Cancha 3',
   'Gimnasio 1',
@@ -51,6 +52,7 @@ categoriasDisponibles = [
   'Infantil',
   'Deporte',
   'Deporte Individual',
+  'Deporte de Equipo',
   'Deporte de Grupo',
   'Arte',
   'Arte Marcial'
@@ -59,9 +61,11 @@ categoriasDisponibles = [
 //FRANJA HORARIA DISPONIBLE
    horariosDisponibles: string[] = [
   '09:00 - 11:00',
+  '9:00 - 10:30',
   '10:00 - 11:00',
   '10:00 - 12:00',
   '11:00 - 12:00',
+  '14:00 - 15:00',
   '15:00 - 17:00',
   '15:00 - 16:30',
   '16:00 - 17:00',
