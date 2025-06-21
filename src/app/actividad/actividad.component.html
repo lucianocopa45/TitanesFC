@@ -11,7 +11,7 @@
       <div class="campo">
         <label>Categoría</label>
         <select formControlName="categoria" class="input-select">
-          <option value="" disabled selected>Seleccione una categoría</option>
+          <option value="" disabled>Seleccione una categoría</option>
           <option *ngFor="let cat of categoriasDisponibles" [value]="cat">{{ cat }}</option>
         </select>
       </div>
@@ -19,7 +19,7 @@
       <div class="campo">
         <label>Día</label>
         <select formControlName="dia" class="input-select">
-          <option value="" disabled selected>Seleccione un día</option>
+          <option value="" disabled>Seleccione un día</option>
           <option *ngFor="let d of dias" [value]="d">{{ d }}</option>
         </select>
       </div>
@@ -27,7 +27,7 @@
       <div class="campo">
         <label>Horario</label>
         <select formControlName="horario" class="input-select">
-          <option value="" disabled selected>Seleccione un horario</option>
+          <option value="" disabled>Seleccione un horario</option>
           <option *ngFor="let h of horariosDisponibles" [value]="h">{{ h }}</option>
         </select>
       </div>
@@ -35,7 +35,7 @@
       <div class="campo">
         <label>Lugar</label>
         <select formControlName="lugar" class="input-select">
-          <option value="" disabled selected>Seleccione un lugar</option>
+          <option value="" disabled >Seleccione un lugar</option>
           <option *ngFor="let lugar of lugaresDisponibles" [value]="lugar">{{ lugar }}</option>
         </select>
       </div>

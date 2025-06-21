@@ -15,7 +15,7 @@ export class ActividadComponent implements OnInit {
   actividades: any[] = [];
   editando = false;
   idEditando: number | null = null;
-  dias = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
+  dias = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábados', 'Domingos'];
   horarios = ['08:00', '10:00', '12:00', '14:00', '16:00', '18:00', '20:00'];
 
   constructor(private fb: FormBuilder, private http: HttpClient) {
@@ -32,13 +32,14 @@ export class ActividadComponent implements OnInit {
 
 //CATEGORIAS DISPONIBLES
 lugaresDisponibles = [
-  'Cancha 1',
+  'Cancha 01',
   'Cancha 2',
   'Cancha 3',
   'Gimnasio 1',
   'Gimnasio 2',
   'Gimnasio 3',
-  'Pista',
+  'Pista 1',
+  'Pista ',
   'Pileta'
 ];
 
@@ -57,13 +58,16 @@ categoriasDisponibles = [
 
 //FRANJA HORARIA DISPONIBLE
    horariosDisponibles: string[] = [
-  '08:00 - 09:00',
-  '09:00 - 10:00',
+  '09:00 - 11:00',
   '10:00 - 11:00',
+  '10:00 - 12:00',
   '11:00 - 12:00',
-  '14:00 - 15:00',
-  '15:00 - 16:00',
+  '15:00 - 17:00',
+  '15:00 - 16:30',
   '16:00 - 17:00',
+  '16:00 - 17:30',
+  '17:00 - 18:00',
+  '18:00 - 19:00',
   '17:00 - 18:00'
   ];
 
@@ -113,12 +117,21 @@ categoriasDisponibles = [
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  editarActividad(act: any): void {
-    this.formActividad.patchValue(act);
-    this.editando = true;
-    this.idEditando = act.id_actividad;
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
+editarActividad(act: any): void {
+  console.log('Actividad a editar:', act);
+  this.formActividad.patchValue({
+    nombre: act.nombre,
+    categoria: act.categoria,
+    dia: act.dia,
+    horario: act.horario,
+    lugar: act.lugar,
+    precio: act.precio,
+    cupo_maximo: act.cupo_maximo
+  });
+  this.editando = true;
+  this.idEditando = act.id_actividad;
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
 
   eliminarActividad(id: number): void {
     if (confirm('¿Está seguro que desea eliminar esta actividad?')) {
