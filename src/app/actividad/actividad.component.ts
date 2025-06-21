@@ -60,6 +60,7 @@ categoriasDisponibles = [
 
 //FRANJA HORARIA DISPONIBLE
    horariosDisponibles: string[] = [
+  '09:00 - 10:00',
   '09:00 - 11:00',
   '9:00 - 10:30',
   '10:00 - 11:00',
@@ -71,6 +72,7 @@ categoriasDisponibles = [
   '16:00 - 17:00',
   '16:00 - 17:30',
   '17:00 - 18:00',
+  '17:00 - 18:30',
   '18:00 - 19:00',
   '17:00 - 18:00'
   ];
