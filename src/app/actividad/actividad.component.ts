@@ -133,6 +133,22 @@ editarActividad(act: any): void {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
+cancelar(): void {
+  this.formActividad.reset({
+    nombre: '',
+    categoria: '',
+    dia: '',
+    horario: '',
+    lugar: '',
+    precio: 0,
+    cupo_maximo: 0
+  });
+  this.editando = false;
+  this.idEditando = null;
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+
   eliminarActividad(id: number): void {
     if (confirm('¿Está seguro que desea eliminar esta actividad?')) {
       this.http.delete(`http://localhost:3000/api/actividades/${id}`).subscribe({

@@ -142,3 +142,33 @@
 .boton-accion:hover {
   background-color: #e60000;
 }
+
+/* Contenedor de botones */
+.boton-container {
+  display: flex;
+  gap: 10px; /* Espacio entre botones */
+  width: 100%;
+}
+
+/* Botón cancelar igual al guardar */
+.boton-cancelar {
+  flex: 1;
+  background: linear-gradient(90deg, #ff3c3c, #ff5959);
+  color: #fff;
+  padding: 11px;
+  font-size: 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.2s;
+}
+
+.boton-cancelar:hover {
+  background: linear-gradient(90deg, #e60000, #ff1a1a);
+  transform: scale(1.03);
+}
+
+/* Botón guardar también ocupa espacio igual */
+.boton-guardar {
+  flex: 1;
+}

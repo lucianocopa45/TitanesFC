@@ -35,7 +35,7 @@
       <div class="campo">
         <label>Lugar</label>
         <select formControlName="lugar" class="input-select">
-          <option value="" disabled >Seleccione un lugar</option>
+          <option value="" disabled>Seleccione un lugar</option>
           <option *ngFor="let lugar of lugaresDisponibles" [value]="lugar">{{ lugar }}</option>
         </select>
       </div>
@@ -53,9 +53,16 @@
         <input type="number" formControlName="cupo_maximo" class="input-texto" min="1" step="1" placeholder="1 o más" />
       </div>
 
-      <button class="boton-guardar" type="submit">
-        {{ editando ? 'Actualizar' : 'Registrar' }}
-      </button>
+      <div class="boton-container">
+        <button class="boton-guardar" type="submit">
+          {{ editando ? 'Actualizar' : 'Registrar' }}
+        </button>
+
+        <button class="boton-cancelar" type="button" (click)="cancelar()">
+          Cancelar
+        </button>
+      </div>
+
 
     </form>
   </div>
