@@ -1,0 +1,103 @@
+<div class="actividad-container">
+  <div class="actividad-card">
+    <h1>Gestión de Actividades</h1>
+    <form [formGroup]="formActividad" (ngSubmit)="guardarActividad()">
+
+      <div class="campo">
+        <label>Nombre</label>
+        <input formControlName="nombre" class="input-texto" placeholder="Ingrese el nombre de la actividad" />
+      </div>
+
+      <div class="campo">
+        <label>Categoría</label>
+        <select formControlName="categoria" class="input-select">
+          <option value="" disabled>Seleccione una categoría</option>
+          <option *ngFor="let cat of categoriasDisponibles" [value]="cat">{{ cat }}</option>
+        </select>
+      </div>
+
+      <div class="campo">
+        <label>Día</label>
+        <select formControlName="dia" class="input-select">
+          <option value="" disabled>Seleccione un día</option>
+          <option *ngFor="let d of dias" [value]="d">{{ d }}</option>
+        </select>
+      </div>
+
+      <div class="campo">
+        <label>Horario</label>
+        <select formControlName="horario" class="input-select">
+          <option value="" disabled>Seleccione un horario</option>
+          <option *ngFor="let h of horariosDisponibles" [value]="h">{{ h }}</option>
+        </select>
+      </div>
+
+      <div class="campo">
+        <label>Lugar</label>
+        <select formControlName="lugar" class="input-select">
+          <option value="" disabled>Seleccione un lugar</option>
+          <option *ngFor="let lugar of lugaresDisponibles" [value]="lugar">{{ lugar }}</option>
+        </select>
+      </div>
+
+      <div class="campo">
+        <label>Precio</label>
+        <div class="campo-precio">
+          <span>$</span>
+          <input type="number" formControlName="precio" class="input-texto" min="0" step="0.01" placeholder="0.00" />
+        </div>
+      </div>
+
+      <div class="campo">
+        <label>Cupo Máximo</label>
+        <input type="number" formControlName="cupo_maximo" class="input-texto" min="1" step="1" placeholder="1 o más" />
+      </div>
+
+      <div class="boton-container">
+        <button class="boton-guardar" type="submit">
+          {{ editando ? 'Actualizar' : 'Registrar' }}
+        </button>
+
+        <button class="boton-cancelar" type="button" (click)="cancelar()">
+          Cancelar
+        </button>
+      </div>
+
+
+    </form>
+  </div>
+
+  <div class="actividad-tabla">
+    <table>
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Categoría</th>
+          <th>Día</th>
+          <th>Horario</th>
+          <th>Lugar</th>
+          <th>Precio</th>
+          <th>Cupo</th>
+          <th>Anotados</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let actividad of actividades">
+          <td>{{ actividad.nombre }}</td>
+          <td>{{ actividad.categoria }}</td>
+          <td>{{ actividad.dia }}</td>
+          <td>{{ actividad.horario }}</td>
+          <td>{{ actividad.lugar }}</td>
+          <td>${{ actividad.precio }}</td>
+          <td>{{ actividad.cupo_maximo }}</td>
+          <td>{{ actividad.cantidad_anotados }}</td>
+          <td>
+            <button class="boton-accion" (click)="editarActividad(actividad)">Editar</button>
+            <button class="boton-accion" (click)="eliminarActividad(actividad.id_actividad)">Eliminar</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
