@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { RouterModule } from '@angular/router';
 
@@ -8,6 +8,34 @@ import { RouterModule } from '@angular/router';
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css'
 })
-export class NavbarComponent {
+export class NavbarComponent implements OnInit{
 
+  usuario: any;
+  nombre: any;
+  rol: any;
+  apellido: any;
+  ngOnInit(): void {
+    try {
+      const usuarioStorage = sessionStorage.getItem('usuario');
+
+      if (usuarioStorage) {
+      this.usuario = JSON.parse(usuarioStorage);
+      this.nombre = this.usuario.nombre;
+      this.rol = this.usuario.rol;
+      this.apellido = this.usuario.apellido;
+
+      console.log("Usuario cargado desde sessionStorage:", this.usuario);
+      }
+    } catch (error) {
+      console.error("No se cargo usuario", error);
+    }
+
+  }
+
+  cerrarSesion() {
+  // Por ejemplo, si usás localStorage:
+  localStorage.clear();
+  // Redirigís al login
+  window.location.href = '/panel';
+}
 }
