@@ -1,0 +1,9 @@
+.navbar-expand-lg .navbar-collapse {
+    display: flex !important;
+    flex-basis: auto;
+    justify-content: space-between;
+}
+.cardUserLog{
+    display: flex;
+    flex-direction: row;
+}
