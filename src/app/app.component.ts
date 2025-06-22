@@ -4,6 +4,7 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { FooterComponent } from './footer/footer.component';
 import { FormsModule } from '@angular/forms';
 
+
 @Component({
   selector: 'app-root',
   imports: [RouterOutlet, NavbarComponent, FooterComponent, FormsModule],
