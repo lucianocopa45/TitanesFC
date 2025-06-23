@@ -190,7 +190,7 @@
       <label for="editActividades">Actividad*</label>
       <select id="editActividades" formControlName="actividades" multiple title="actividades">
         <!-- CORRECCIÓN CLAVE AQUÍ: cambia [ngValue]="actividad.id_actividad" a [ngValue]="actividad" -->
-        <option *ngFor="let actividad of actividades" [ngValue]="actividad">
+        <option *ngFor="let actividad of actividades" [ngValue]="actividad.nombre">
           {{ actividad.nombre }} - ${{ actividad.precio }}
         </option>
       </select>
