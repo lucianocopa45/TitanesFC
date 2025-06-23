@@ -198,10 +198,8 @@ export class SociosComponent implements OnInit {
   editarSocio(socio: any): void {
     this.editandoSocioId = socio.id;
 
-    // Asegurarse de que categoria.nombre exista para encontrar la categoría
     const categoriaSeleccionada = this.categorias.find(cat => cat.nombre === socio.categoria?.nombre);
 
-    // Mapear las actividades existentes del socio a sus nombres para el formulario de edición
     const actividadesNombres = socio.actividades.map((act: any) => act.nombre);
 
     this.editForm.patchValue({
@@ -211,8 +209,8 @@ export class SociosComponent implements OnInit {
       fechaNacimiento: this.formatearFechaParaInput(socio.fechaNacimiento),
       direccion: socio.direccion,
       telefono: socio.telefono,
-      categoria: categoriaSeleccionada, // Pasamos el objeto de categoría
-      actividades: actividadesNombres // Pasamos el array de nombres de actividades
+      categoria: categoriaSeleccionada, 
+      actividades: actividadesNombres 
     });
   }
 
@@ -232,8 +230,8 @@ export class SociosComponent implements OnInit {
       fecha_nacimiento: this.formatearFechaParaBD(dataEditada.fechaNacimiento),
       direccion: dataEditada.direccion,
       telefono: dataEditada.telefono,
-      categoria: dataEditada.categoria.nombre, // Enviar solo el nombre de la categoría
-      actividades: dataEditada.actividades // editForm.actividades ya contiene los nombres de las actividades
+      categoria: dataEditada.categoria.nombre, 
+      actividades: dataEditada.actividades 
     };
 
     this.sociosService.actualizarSocio(this.editandoSocioId, socioActualizado).subscribe({
