@@ -1,7 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
+import { SociosService } from '../service/socios.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-socios',
@@ -10,7 +12,7 @@ import { ReactiveFormsModule } from '@angular/forms';
   templateUrl: './socios.component.html',
   styleUrls: ['./socios.component.css']
 })
-export class SociosComponent {
+export class SociosComponent implements OnInit {
   step = 1;
 
   personalForm: FormGroup;
@@ -20,248 +22,10 @@ export class SociosComponent {
   socios: any[] = [];
   editandoSocioId: number | null = null;
 
-  categorias = [
-    { nombre: 'Activo', costo: 5000 },
-    { nombre: 'Adherente', costo: 3000 },
-    { nombre: 'Cadete', costo: 2000 },
-    { nombre: 'Vitalicio', costo: 0 }
-  ];
+  categorias: any[] = [];
+  actividades: any[] = [];
 
-  actividades = [
-    {
-      id_actividad: 1,
-      nombre: 'Ajedrez',
-      categoria: 'Arte',
-      dia: 'Lunes',
-      horario: '08:00 - 09:00',
-      lugar: 'Sala Cultural',
-      precio: 1500,
-      cupo_maximo: 20,
-      cantidad_anotados: 20
-    },
-    {
-      id_actividad: 2,
-      nombre: 'Tenis',
-      categoria: 'Deporte Individual',
-      dia: 'Sábados',
-      horario: '10:00 - 12:00',
-      lugar: 'Cancha 1',
-      precio: 1200,
-      cupo_maximo: 15,
-      cantidad_anotados: 10
-    },
-    {
-      id_actividad: 3,
-      nombre: 'Fútbol Infantil',
-      categoria: 'Infantil',
-      dia: 'Lunes',
-      horario: '18:00 - 19:00',
-      lugar: 'Cancha 3',
-      precio: 1200,
-      cupo_maximo: 30,
-      cantidad_anotados: 20
-    },
-    {
-      id_actividad: 4,
-      nombre: 'Básquet',
-      categoria: 'Deporte de Equipo',
-      dia: 'Jueves',
-      horario: '18:00 - 19:00',
-      lugar: 'Gimnasio 1',
-      precio: 1500,
-      cupo_maximo: 25,
-      cantidad_anotados: 22
-    },
-    {
-      id_actividad: 5,
-      nombre: 'Natación',
-      categoria: 'Deporte',
-      dia: 'Miércoles',
-      horario: '10:00 - 11:00',
-      lugar: 'Pileta',
-      precio: 2000,
-      cupo_maximo: 30,
-      cantidad_anotados: 30
-    },
-    {
-      id_actividad: 6,
-      nombre: 'Fútbol',
-      categoria: 'Deporte Individual',
-      dia: 'Viernes',
-      horario: '19:00 - 20:00',
-      lugar: 'Cancha 2',
-      precio: 1600,
-      cupo_maximo: 30,
-      cantidad_anotados: 22
-    },
-    {
-      id_actividad: 7,
-      nombre: 'Vóley',
-      categoria: 'Deporte de equipo',
-      dia: 'Sábado',
-      horario: '15:00 - 17:00',
-      lugar: 'Gimnasio 2',
-      precio: 1600,
-      cupo_maximo: 20,
-      cantidad_anotados: 17
-    },
-    {
-      id_actividad: 8,
-      nombre: 'Atletismo',
-      categoria: 'Deporte Individual',
-      dia: 'Lunes',
-      horario: '10:00 - 12:00',
-      lugar: 'Pista 1',
-      precio: 1300,
-      cupo_maximo: 25,
-      cantidad_anotados: 16
-    },
-    {
-      id_actividad: 9,
-      nombre: 'Gimnasia Artística',
-      categoria: 'Arte',
-      dia: 'Martes',
-      horario: '09:00 - 11:00',
-      lugar: 'Gimnasio 3',
-      precio: 1100,
-      cupo_maximo: 15,
-      cantidad_anotados: 14
-    },
-    {
-      id_actividad: 10,
-      nombre: 'Karate Infantil',
-      categoria: 'Infantil',
-      dia: 'Lunes',
-      horario: '17:00 - 18:00',
-      lugar: 'Gimnasio 1',
-      precio: 1000,
-      cupo_maximo: 15,
-      cantidad_anotados: 11
-    },
-    {
-      id_actividad: 11,
-      nombre: 'Karate',
-      categoria: 'Arte Marcial',
-      dia: 'Miércoles',
-      horario: '16:00 - 17:30',
-      lugar: 'Gimnasio 3',
-      precio: 1100,
-      cupo_maximo: 20,
-      cantidad_anotados: 8
-    },
-    {
-      id_actividad: 12,
-      nombre: 'Judo',
-      categoria: 'Arte Marcial',
-      dia: 'Viernes',
-      horario: '15:00 - 16:30',
-      lugar: 'Gimnasio 2',
-      precio: 1100,
-      cupo_maximo: 20,
-      cantidad_anotados: 13
-    },
-    {
-      id_actividad: 13,
-      nombre: 'Judo Infantil',
-      categoria: 'Infantil',
-      dia: 'Martes',
-      horario: '09:00 - 10:00',
-      lugar: 'Gimnasio 2',
-      precio: 1100,
-      cupo_maximo: 15,
-      cantidad_anotados: 9
-    },
-    {
-      id_actividad: 14,
-      nombre: 'Esgrima',
-      categoria: 'Arte Marcial',
-      dia: 'Miércoles',
-      horario: '16:00 - 17:00',
-      lugar: 'Gimnasio 1',
-      precio: 2000,
-      cupo_maximo: 15,
-      cantidad_anotados: 15
-    },
-    {
-      id_actividad: 15,
-      nombre: 'Rugby',
-      categoria: 'Deporte de equipo',
-      dia: 'Lunes',
-      horario: '16:00 - 17:30',
-      lugar: 'Cancha 1',
-      precio: 1900,
-      cupo_maximo: 25,
-      cantidad_anotados: 16
-    },
-    {
-      id_actividad: 16,
-      nombre: 'Hockey',
-      categoria: 'Deporte en equipo',
-      dia: 'Martes',
-      horario: '17:00 - 19:30',
-      lugar: 'Gimnasio 2',
-      precio: 1110,
-      cupo_maximo: 20,
-      cantidad_anotados: 18
-    },
-    {
-      id_actividad: 17,
-      nombre: 'Handball',
-      categoria: 'Deporte en equipo',
-      dia: 'Viernes',
-      horario: '09:00 - 10:00',
-      lugar: 'Gimnasio 1',
-      precio: 1000,
-      cupo_maximo: 15,
-      cantidad_anotados: 11
-    },
-    {
-      id_actividad: 18,
-      nombre: 'Handball infantil',
-      categoria: 'Infantil',
-      dia: 'Miércoles',
-      horario: '16:00 - 17:00',
-      lugar: 'Gimnasio 2',
-      precio: 1000,
-      cupo_maximo: 20,
-      cantidad_anotados: 15
-    },
-    {
-      id_actividad: 19,
-      nombre: 'Mini Vóley',
-      categoria: 'Infantil',
-      dia: 'Sábado',
-      horario: '9:00 - 10:30',
-      lugar: 'Cancha 1',
-      precio: 1400,
-      cupo_maximo: 25,
-      cantidad_anotados: 24
-    },
-    {
-      id_actividad: 20,
-      nombre: 'Gimnasia Infantil',
-      categoria: 'Infantil',
-      dia: 'Martes',
-      horario: '16:30 - 18:30',
-      lugar: 'Gimnasio 1',
-      precio: 1110,
-      cupo_maximo: 15,
-      cantidad_anotados: 15
-    },
-    {
-      id_actividad: 21,
-      nombre: 'Mini Básquet',
-      categoria: 'Infantil',
-      dia: 'Sábado',
-      horario: '17:00 - 18:30',
-      lugar: 'Gimnasio 3',
-      precio: 1210,
-      cupo_maximo: 15,
-      cantidad_anotados: 7
-    }
-  ];
-
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private sociosService: SociosService) {
     this.personalForm = this.fb.group({
       nombre: ['', [Validators.required, Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/)]],
       apellido: ['', [Validators.required, Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/)]],
@@ -269,8 +33,8 @@ export class SociosComponent {
       fechaNacimiento: ['', Validators.required],
       direccion: ['', Validators.required],
       telefono: ['', [Validators.required, Validators.pattern(/^\d{7,15}$/)]],
-      categoria: [null, Validators.required],
-      actividades: [[], Validators.required]
+      categoria: [null, Validators.required], // Se espera un objeto Categoria
+      actividades: [[], Validators.required] // Se espera un array de objetos Actividad
     });
 
     this.userForm = this.fb.group({
@@ -279,31 +43,94 @@ export class SociosComponent {
       confirmarContrasena: ['', Validators.required]
     });
 
+
     this.editForm = this.fb.group({
-      nombre: ['', Validators.required],
-      apellido: ['', Validators.required],
-      dni: ['', Validators.required],
+      nombre: ['', [Validators.required, Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/)]],
+      apellido: ['', [Validators.required, Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/)]],
+      dni: ['', [Validators.required, Validators.pattern(/^\d{7,10}$/)]],
       fechaNacimiento: ['', Validators.required],
       direccion: ['', Validators.required],
-      telefono: ['', Validators.required],
-      categoria: [null, Validators.required], 
-      actividades: [[]]
+      telefono: ['', [Validators.required, Validators.pattern(/^\d{7,15}$/)]],
+      categoria: [null, Validators.required], // Se espera un objeto Categoria
+      actividades: [[]] // Se espera un array de nombres de actividades (para el envío al backend)
     });
   }
 
-  // Validación de coincidencia de contraseñas
-  matchPasswords(): boolean {
-    const pass = this.userForm.get('contrasena')?.value;
-    const confirm = this.userForm.get('confirmarContrasena')?.value;
-    return pass === confirm;
+  ngOnInit(): void {
+    this.cargarCategorias();
+    this.cargarActividades();
+    this.cargarSocios();
   }
+
+  // Validador personalizado para contraseñas
+  matchPasswordsValidator() {
+    return (group: FormGroup) => {
+      const pass = group.get('contrasena')?.value;
+      const confirm = group.get('confirmarContrasena')?.value;
+      return pass === confirm ? null : { mismatch: true };
+    };
+  }
+
+  cargarCategorias(): void {
+    this.sociosService.getCategorias().subscribe({
+      next: (res: any[]) => {
+        this.categorias = res;
+        console.log('Categorías cargadas:', this.categorias);
+      },
+      error: (err: HttpErrorResponse) => {
+        console.error('Error al cargar categorías:', err);
+        alert('Error al cargar categorías.');
+      }
+    });
+  }
+
+  cargarActividades(): void {
+    this.sociosService.getActividades().subscribe({
+      next: (res: any[]) => {
+        this.actividades = res;
+        console.log('Actividades cargadas:', this.actividades);
+      },
+      error: (err: HttpErrorResponse) => {
+        console.error('Error al cargar actividades:', err);
+        alert('Error al cargar actividades.');
+      }
+    });
+  }
+
+  cargarSocios(): void {
+    this.sociosService.getSocios().subscribe({
+      next: (res: any[]) => {
+        // Mapear la respuesta del backend para que coincida con la estructura esperada por el frontend
+        this.socios = res.map((socioApi: any) => ({
+          id: socioApi.id, // backend ahora devuelve 'id' directamente
+          nombre: socioApi.nombre,
+          apellido: socioApi.apellido,
+          dni: socioApi.dni,
+          fechaNacimiento: socioApi.fechaNacimiento, // backend ahora devuelve 'fechaNacimiento' camelCase
+          direccion: socioApi.direccion,
+          telefono: socioApi.telefono,
+          email: socioApi.email,
+          categoria: socioApi.categoria, // backend ahora devuelve 'categoria' como objeto
+          actividades: socioApi.actividades, // backend ahora devuelve 'actividades' como array de objetos
+          estado: socioApi.estado // backend ahora devuelve 'estado' camelCase
+        }));
+        console.log('Socios cargados:', this.socios);
+      },
+      error: (err: HttpErrorResponse) => {
+        console.error('Error al cargar socios:', err);
+        alert('Error al cargar socios.');
+      }
+    });
+  }
+
+
 
   nextStep() {
     if (this.personalForm.valid) {
       this.step = 2;
     } else {
       this.personalForm.markAllAsTouched();
-      alert('Por favor, completá todos los campos requeridos del paso 1.');
+      alert('Por favor, completá todos los campos requeridos del Paso 1.');
     }
   }
 
@@ -311,35 +138,123 @@ export class SociosComponent {
     this.step = 1;
   }
 
-  submit() {
-    if (this.personalForm.invalid || this.userForm.invalid || !this.matchPasswords()) {
+  // --- Operaciones CRUD (conectadas a la API) ---
+  submit(): void {
+    // Validar ambos formularios y el validador de grupo de contraseñas
+    if (this.personalForm.invalid || this.userForm.invalid) { // Ya no necesitamos matchPasswords() aquí
       this.personalForm.markAllAsTouched();
       this.userForm.markAllAsTouched();
+      alert('Revisa los campos y asegúrate de que las contraseñas coincidan.');
       return;
     }
 
-    const selectedCategory = this.personalForm.value.categoria;
+    const personalData = this.personalForm.value;
+    const userData = this.userForm.value;
 
-    const selectedActivityIds = this.personalForm.value.actividades;
-    const selectedActivities = this.actividades.filter(act =>
-      selectedActivityIds.includes(act.id_actividad)
-    );
-
-    const nuevoSocio = {
-      id: this.socios.length + 1,
-      ...this.personalForm.value,
-      ...this.userForm.value,
-      categoria: selectedCategory,
-      actividades: selectedActivities
+    const socioParaCrear = {
+      nombre: personalData.nombre,
+      apellido: personalData.apellido,
+      dni: personalData.dni,
+      fecha_nacimiento: this.formatearFechaParaBD(personalData.fechaNacimiento),
+      direccion: personalData.direccion,
+      telefono: personalData.telefono,
+      categoria: personalData.categoria.nombre, // Enviar solo el nombre de la categoría
+      actividades: personalData.actividades.map((act: any) => act.nombre), // Enviar solo los nombres de las actividades
+      email: userData.correo,
+      contrasena: userData.contrasena
     };
 
-    this.socios.push(nuevoSocio);
-    alert('¡Registro exitoso!');
-    this.personalForm.reset();
-    this.userForm.reset();
-    this.step = 1;
+    this.sociosService.crearSocio(socioParaCrear).subscribe({
+      next: (res: any) => {
+        alert('¡Registro de socio exitoso!');
+        this.personalForm.reset();
+        this.userForm.reset();
+        this.step = 1;
+        this.cargarSocios();
+      },
+      error: (err: HttpErrorResponse) => {
+        console.error('Error al registrar socio:', err);
+        alert(`Error al registrar socio: ${err.error?.mensaje || 'Error desconocido'}.`);
+      }
+    });
   }
 
+  eliminarSocio(id: number): void {
+    const confirmado = confirm('¿Estás seguro de eliminar este socio? Esta acción es irreversible.');
+    if (confirmado) {
+      this.sociosService.eliminarSocio(id).subscribe({
+        next: (res: any) => {
+          alert('Socio eliminado correctamente.');
+          this.cargarSocios();
+        },
+        error: (err: HttpErrorResponse) => {
+          console.error('Error al eliminar socio:', err);
+          alert(`Error al eliminar socio: ${err.error?.mensaje || 'Error desconocido'}.`);
+        }
+      });
+    }
+  }
+
+  editarSocio(socio: any): void {
+    this.editandoSocioId = socio.id;
+
+    // Asegurarse de que categoria.nombre exista para encontrar la categoría
+    const categoriaSeleccionada = this.categorias.find(cat => cat.nombre === socio.categoria?.nombre);
+
+    // Mapear las actividades existentes del socio a sus nombres para el formulario de edición
+    const actividadesNombres = socio.actividades.map((act: any) => act.nombre);
+
+    this.editForm.patchValue({
+      nombre: socio.nombre,
+      apellido: socio.apellido,
+      dni: socio.dni,
+      fechaNacimiento: this.formatearFechaParaInput(socio.fechaNacimiento),
+      direccion: socio.direccion,
+      telefono: socio.telefono,
+      categoria: categoriaSeleccionada, // Pasamos el objeto de categoría
+      actividades: actividadesNombres // Pasamos el array de nombres de actividades
+    });
+  }
+
+  guardarEdicion(): void {
+    if (this.editForm.invalid || this.editandoSocioId === null) {
+      this.editForm.markAllAsTouched();
+      alert('Por favor, completa todos los campos requeridos del formulario de edición.');
+      return;
+    }
+
+    const dataEditada = this.editForm.value;
+
+    const socioActualizado = {
+      nombre: dataEditada.nombre,
+      apellido: dataEditada.apellido,
+      dni: dataEditada.dni,
+      fecha_nacimiento: this.formatearFechaParaBD(dataEditada.fechaNacimiento),
+      direccion: dataEditada.direccion,
+      telefono: dataEditada.telefono,
+      categoria: dataEditada.categoria.nombre, // Enviar solo el nombre de la categoría
+      actividades: dataEditada.actividades // editForm.actividades ya contiene los nombres de las actividades
+    };
+
+    this.sociosService.actualizarSocio(this.editandoSocioId, socioActualizado).subscribe({
+      next: (res: any) => {
+        alert('Datos personales del socio actualizados correctamente.');
+        this.cancelarEdicion();
+        this.cargarSocios();
+      },
+      error: (err: HttpErrorResponse) => {
+        console.error('Error al actualizar socio:', err);
+        alert(`Error al actualizar socio: ${err.error?.mensaje || 'Error desconocido'}.`);
+      }
+    });
+  }
+
+  cancelarEdicion(): void {
+    this.editandoSocioId = null;
+    this.editForm.reset();
+  }
+
+  // --- Funciones Auxiliares para la Vista ---
   getCostoActividades(socio: any): number {
     return socio.actividades?.reduce((total: number, act: any) => total + (act.precio || 0), 0) || 0;
   }
@@ -349,59 +264,29 @@ export class SociosComponent {
   }
 
   getCostoTotal(socio: any): number {
+    // Asegurarse de que 'socio.categoria' y 'socio.categoria.costo' existan
     const costoCategoria = socio.categoria?.costo || 0;
     const costoActividades = this.getCostoActividades(socio);
     return costoCategoria + costoActividades;
   }
 
-  editarSocio(socio: any) {
-    this.editandoSocioId = socio.id;
-
-    const selectedCategory = this.categorias.find(cat => cat.nombre === socio.categoria.nombre);
-
-  
-    const selectedActivityIds = socio.actividades.map((act: any) => act.id_actividad);
-
-    this.editForm.patchValue({ 
-      nombre: socio.nombre,
-      apellido: socio.apellido,
-      dni: socio.dni,
-      fechaNacimiento: socio.fechaNacimiento,
-      direccion: socio.direccion,
-      telefono: socio.telefono,
-      categoria: selectedCategory, 
-      actividades: selectedActivityIds 
-    });
+  formatearFechaParaInput(fecha: any): string | null {
+    if (!fecha) return null;
+    const d = new Date(fecha);
+    if (isNaN(d.getTime())) return null;
+    const year = d.getFullYear();
+    const month = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
   }
 
-  guardarEdicion() {
-    if (this.editForm.valid && this.editandoSocioId !== null) {
-      const index = this.socios.findIndex(s => s.id === this.editandoSocioId);
-      if (index !== -1) {
-        const updatedSocioData = this.editForm.value;
-
-        
-        const updatedActivities = this.actividades.filter(act =>
-          updatedSocioData.actividades.includes(act.id_actividad)
-        );
-
-        this.socios[index] = {
-          ...this.socios[index],
-          ...updatedSocioData,
-          actividades: updatedActivities
-        };
-        this.editandoSocioId = null;
-        this.editForm.reset();
-      }
-    }
-  }
-
-  cancelarEdicion() {
-    this.editandoSocioId = null;
-    this.editForm.reset();
-  }
-
-  eliminarSocio(id: number) {
-    this.socios = this.socios.filter(s => s.id !== id);
+  formatearFechaParaBD(fecha: any): string | null {
+    if (!fecha) return null;
+    const d = new Date(fecha);
+    if (isNaN(d.getTime())) return null;
+    const year = d.getFullYear();
+    const month = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
   }
 }
