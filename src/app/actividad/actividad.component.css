@@ -1,0 +1,174 @@
+/* Contenedor principal */
+.actividad-container {
+  padding: 20px;
+  background: linear-gradient(135deg, #001f3f, #003366);
+  min-height: 100vh;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Formulario angosto, como estaba */
+.actividad-card {
+  background-color: rgba(0, 51, 102, 0.85);
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 0 10px rgba(255, 0, 0, 0.4);
+  margin-bottom: 25px;
+  width: 100%;
+  max-width: 500px;
+  transition: transform 0.3s ease;
+}
+
+.actividad-card:hover {
+  transform: translateY(-5px);
+}
+
+.actividad-card h1 {
+  text-align: center;
+  color: #ffffff;
+  margin-bottom: 20px;
+}
+
+.campo {
+  margin-bottom: 15px;
+}
+
+.campo label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+  color: #ffffff;
+}
+
+.input-texto,
+.input-select {
+  width: 100%;
+  padding: 9px;
+  border-radius: 6px;
+  border: 1px solid #0059b3;
+  background-color: #00264d;
+  color: #fff;
+  outline: none;
+  transition: border-color 0.3s;
+}
+
+.input-texto:focus,
+.input-select:focus {
+  border-color: #ff3c3c;
+}
+
+.campo-precio {
+  display: flex;
+  align-items: center;
+}
+
+.campo-precio span {
+  background: #ff3c3c;
+  padding: 7px 10px;
+  border-radius: 6px 0 0 6px;
+  font-weight: bold;
+}
+
+.campo-precio input {
+  border-radius: 0 6px 6px 0;
+}
+
+.boton-guardar {
+  width: 100%;
+  background: linear-gradient(90deg, #ff3c3c, #ff5959);
+  color: #fff;
+  padding: 11px;
+  font-size: 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.2s;
+}
+
+.boton-guardar:hover {
+  background: linear-gradient(90deg, #e60000, #ff1a1a);
+  transform: scale(1.03);
+}
+
+/* Tabla más ancha */
+.actividad-tabla {
+  width: 100%;
+  max-width: 1300px; /* Más ancha que antes */
+  overflow-x: auto;
+}
+
+.actividad-tabla table {
+  width: 100%;
+  border-collapse: collapse;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 0, 0, 0.3);
+}
+
+.actividad-tabla th {
+  background: #003366;
+  color: #ffffff;
+  padding: 10px;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+.actividad-tabla td {
+  background: rgba(0, 38, 77, 0.9);
+  padding: 10px;
+  text-align: center;
+  border-bottom: 1px solid #00264d;
+}
+
+.actividad-tabla tr:nth-child(even) td {
+  background: rgba(0, 51, 102, 0.9);
+}
+
+.boton-accion {
+  background-color: #ff3c3c;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 5px;
+  color: #fff;
+  font-weight: bold;
+  cursor: pointer;
+  margin: 2px;
+  transition: background 0.3s;
+}
+
+.boton-accion:hover {
+  background-color: #e60000;
+}
+
+/* Contenedor de botones */
+.boton-container {
+  display: flex;
+  gap: 10px; /* Espacio entre botones */
+  width: 100%;
+}
+
+/* Botón cancelar igual al guardar */
+.boton-cancelar {
+  flex: 1;
+  background: linear-gradient(90deg, #ff3c3c, #ff5959);
+  color: #fff;
+  padding: 11px;
+  font-size: 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.2s;
+}
+
+.boton-cancelar:hover {
+  background: linear-gradient(90deg, #e60000, #ff1a1a);
+  transform: scale(1.03);
+}
+
+/* Botón guardar también ocupa espacio igual */
+.boton-guardar {
+  flex: 1;
+}
