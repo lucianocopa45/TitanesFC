@@ -115,6 +115,9 @@ h2{
     align-items: center;
     justify-content: center;
 }
+i{
+    color: white;
+}
 #iconos-fc{
 border-radius: 50%;
     background-color: rgb(26 90 158);
