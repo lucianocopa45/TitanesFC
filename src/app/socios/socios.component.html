@@ -62,7 +62,7 @@
     <select id="categoria" formControlName="categoria" required>
       <option [ngValue]="null" disabled selected>Seleccione una categoría</option>
       <option *ngFor="let cat of categorias" [ngValue]="cat">
-        {{ cat.nombre }} - ${{ cat.costo }}
+        {{ cat.nombre }} - ${{ cat.cuota }}
       </option>
     </select>
   </div>
@@ -90,7 +90,7 @@
 
   <div class="campo">
     <label for="correo">Correo*</label>
-    <input id="correo" formControlName="correo" placeholder="Ingrese su Correo" />
+    <input id="correo" formControlName="correo" placeholder="Ingrese su Correo" autocomplete="username"/>
     <div *ngIf="userForm.get('correo')?.touched && userForm.get('correo')?.invalid">
       <small *ngIf="userForm.get('correo')?.errors?.['required']">El correo es obligatorio.</small>
       <small *ngIf="userForm.get('correo')?.errors?.['email']">Debe ser un correo válido.</small>
@@ -99,7 +99,7 @@
 
   <div class="campo">
     <label for="contrasena">Contraseña*</label>
-    <input id="contrasena" type="password" formControlName="contrasena" placeholder="Ingrese su contraseña" />
+    <input id="contrasena" type="password" formControlName="contrasena" placeholder="Ingrese su contraseña" autocomplete="new-password"/>
     <div *ngIf="userForm.get('contrasena')?.invalid && (userForm.get('contrasena')?.touched || userForm.get('contrasena')?.dirty)">
       <small *ngIf="userForm.get('contrasena')?.errors?.['required']">La contraseña es obligatoria.</small>
       <small *ngIf="userForm.get('contrasena')?.errors?.['minlength']">Debe tener al menos 6 caracteres.</small>
@@ -108,7 +108,7 @@
 
   <div class="campo">
     <label for="confirmarPasswrd">Confirmar Contraseña*</label>
-    <input id="confirmarPasswrd" type="password" formControlName="confirmarContrasena" placeholder="Confirme su contraseña" />
+    <input id="confirmarPasswrd" type="password" formControlName="confirmarContrasena" placeholder="Confirme su contraseña" autocomplete="new-password"/>
     <div *ngIf="userForm.get('confirmarContrasena')?.touched">
       <!-- Mensaje de error para contraseñas no coincidentes.
            Asumo que la validación matchPasswordsValidator() en el TS es la que manejará esto.
@@ -182,8 +182,8 @@
     <div class="campo">
       <label>Categoría*</label>
       <select formControlName="categoria" required>
-        <option [ngValue]="null" disabled selected>Seleccione una categoría</option>
-        <option *ngFor="let cat of categorias" [ngValue]="cat">{{ cat.nombre }} - ${{ cat.costo }}</option>
+        <option [ngValue]="null" disabled>Seleccione una categoría</option>
+        <option *ngFor="let cat of categorias" [ngValue]="cat">{{ cat.nombre }} - ${{ cat.cuota }}</option>
       </select>
     </div>
     <div class="campo">
