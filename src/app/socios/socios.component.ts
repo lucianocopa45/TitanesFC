@@ -102,17 +102,20 @@ export class SociosComponent implements OnInit {
       next: (res: any[]) => {
         // Mapear la respuesta del backend para que coincida con la estructura esperada por el frontend
         this.socios = res.map((socioApi: any) => ({
-          id: socioApi.id, // backend ahora devuelve 'id' directamente
-          nombre: socioApi.nombre,
-          apellido: socioApi.apellido,
-          dni: socioApi.dni,
-          fechaNacimiento: socioApi.fechaNacimiento, // backend ahora devuelve 'fechaNacimiento' camelCase
-          direccion: socioApi.direccion,
-          telefono: socioApi.telefono,
-          email: socioApi.email,
-          categoria: socioApi.categoria, // backend ahora devuelve 'categoria' como objeto
-          actividades: socioApi.actividades, // backend ahora devuelve 'actividades' como array de objetos
-          estado: socioApi.estado // backend ahora devuelve 'estado' camelCase
+  id: socioApi.id_socio,
+  nombre: socioApi.nombre,
+  apellido: socioApi.apellido,
+  dni: socioApi.dni,
+  fechaNacimiento: socioApi.fecha_nacimiento,
+  direccion: socioApi.direccion,
+  telefono: socioApi.telefono,
+  email: socioApi.email,
+  categoria: {
+    nombre: socioApi.categoria,
+    costo: socioApi.cuota_categoria
+  },
+  actividades: socioApi.actividadesSocio || [], // <- ahora sí está disponible
+  estado: socioApi.estado_socio
         }));
         console.log('Socios cargados:', this.socios);
       },
@@ -152,18 +155,18 @@ export class SociosComponent implements OnInit {
     const userData = this.userForm.value;
 
     const socioParaCrear = {
-      nombre: personalData.nombre,
-      apellido: personalData.apellido,
-      dni: personalData.dni,
-      fecha_nacimiento: this.formatearFechaParaBD(personalData.fechaNacimiento),
-      direccion: personalData.direccion,
-      telefono: personalData.telefono,
-      categoria: personalData.categoria.nombre, // Enviar solo el nombre de la categoría
-      actividades: personalData.actividades.map((act: any) => act.nombre), // Enviar solo los nombres de las actividades
-      email: userData.correo,
-      contrasena: userData.contrasena
+  nombreSocio: personalData.nombre,
+  apellidoSocio: personalData.apellido,
+  dniSocio: personalData.dni,
+  fecha_nacimientoSocio: this.formatearFechaParaBD(personalData.fechaNacimiento),
+  direccionSocio: personalData.direccion,
+  telefonoSocio: personalData.telefono,
+  categoriaSocio: personalData.categoria.nombre,
+  actividadesSocio: personalData.actividades.map((act: any) => act.nombre),
+  emailSocio: userData.correo,
+  contrasenaSocio: userData.contrasena
     };
-
+    console.log(socioParaCrear);
     this.sociosService.crearSocio(socioParaCrear).subscribe({
       next: (res: any) => {
         alert('¡Registro de socio exitoso!');
@@ -198,9 +201,9 @@ export class SociosComponent implements OnInit {
   editarSocio(socio: any): void {
     this.editandoSocioId = socio.id;
 
-    const categoriaSeleccionada = this.categorias.find(cat => cat.nombre === socio.categoria?.nombre);
+    const categoriaSeleccionada = this.categorias.find(cat => cat.nombre === socio.categoria?.nombre) || null;
 
-    const actividadesNombres = socio.actividades.map((act: any) => act.nombre);
+    const actividadesNombres = socio.actividades.map((act: any) => act.nombre) || [];
 
     this.editForm.patchValue({
       nombre: socio.nombre,
@@ -224,16 +227,16 @@ export class SociosComponent implements OnInit {
     const dataEditada = this.editForm.value;
 
     const socioActualizado = {
-      nombre: dataEditada.nombre,
-      apellido: dataEditada.apellido,
-      dni: dataEditada.dni,
-      fecha_nacimiento: this.formatearFechaParaBD(dataEditada.fechaNacimiento),
-      direccion: dataEditada.direccion,
-      telefono: dataEditada.telefono,
-      categoria: dataEditada.categoria.nombre, 
-      actividades: dataEditada.actividades 
+  nombreSocio: dataEditada.nombre,
+  apellidoSocio: dataEditada.apellido,
+  dniSocio: dataEditada.dni,
+  fecha_nacimientoSocio: this.formatearFechaParaBD(dataEditada.fechaNacimiento),
+  direccionSocio: dataEditada.direccion,
+  telefonoSocio: dataEditada.telefono,
+  categoriaSocio: dataEditada.categoria.nombre,
+  actividadesSocio: dataEditada.actividades
     };
-
+    console.log(socioActualizado);
     this.sociosService.actualizarSocio(this.editandoSocioId, socioActualizado).subscribe({
       next: (res: any) => {
         alert('Datos personales del socio actualizados correctamente.');
