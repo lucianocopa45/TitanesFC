@@ -12,6 +12,7 @@ html, body {
   margin: 0;
   padding: 0;
   height: 100%;
+  background-color: #0A1930;
 }
 
 app-root {
@@ -67,4 +68,27 @@ small{
 }
 .nav-enlacesRapidos:hover{
     color: aliceblue;
+}
+.navbar .nav-link {
+  color: white !important;
+  position: relative;
+  text-decoration: none;
+  font-weight: 500;
+  padding-bottom: 5px;
+}
+
+.navbar .nav-link::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 2px;
+  background-color: white;
+  width: 0%;
+  transition: width 0.3s ease-in-out;
+}
+
+.navbar .nav-link:hover::after,
+.navbar .nav-link.active::after {
+  width: 100%;
 }
