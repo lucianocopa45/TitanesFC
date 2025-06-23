@@ -60,7 +60,7 @@
   <div class="campo">
     <label for="categoria">Categoría:</label>
     <select id="categoria" formControlName="categoria" required>
-      <option value="" disabled selected>Seleccione una categoría</option>
+      <option [ngValue]="null" disabled selected>Seleccione una categoría</option>
       <option *ngFor="let cat of categorias" [ngValue]="cat">
         {{ cat.nombre }} - ${{ cat.costo }}
       </option>
@@ -70,7 +70,8 @@
   <div class="campo">
     <label for="actividades">Actividad*</label>
     <select id="actividades" formControlName="actividades" multiple title="actividades">
-      <option *ngFor="let actividad of actividades" [ngValue]="actividad.id_actividad">
+      <!-- CORRECCIÓN CLAVE AQUÍ: cambia [ngValue]="actividad.id_actividad" a [ngValue]="actividad" -->
+      <option *ngFor="let actividad of actividades" [ngValue]="actividad">
         {{ actividad.nombre }} - ${{ actividad.precio }}
       </option>
     </select>
@@ -108,8 +109,11 @@
   <div class="campo">
     <label for="confirmarPasswrd">Confirmar Contraseña*</label>
     <input id="confirmarPasswrd" type="password" formControlName="confirmarContrasena" placeholder="Confirme su contraseña" />
-    <div *ngIf="userForm.get('confirmarContrasena')?.touched && !matchPasswords()">
-      <small>Las contraseñas no coinciden.</small>
+    <div *ngIf="userForm.get('confirmarContrasena')?.touched">
+      <!-- Mensaje de error para contraseñas no coincidentes.
+           Asumo que la validación matchPasswordsValidator() en el TS es la que manejará esto.
+           Este *ngIf solo debería aparecer si userForm tiene el error 'mismatch'. -->
+      <small *ngIf="userForm.errors?.['mismatch']">Las contraseñas no coinciden.</small>
     </div>
   </div>
 
@@ -147,11 +151,11 @@
         <td>{{ s.nombre }}</td>
         <td>{{ s.apellido }}</td>
         <td>{{ s.dni }}</td>
-        <td>{{ s.fechaNacimiento }}</td>
+        <td>{{ s.fechaNacimiento | date:'dd/MM/yyyy' }}</td> <!-- Formateo de fecha -->
         <td>{{ s.direccion }}</td>
         <td>{{ s.telefono }}</td>
-        <td>{{ s.categoria.nombre }}</td>
-        <td>${{ s.categoria.costo }}</td>
+        <td>{{ s.categoria?.nombre }}</td> <!-- Usar operador ?. para seguridad -->
+        <td>${{ s.categoria?.costo }}</td> <!-- Usar operador ?. para seguridad -->
         <td>{{ getSelectedActivityNames(s) }}</td>
         <td>${{ getCostoActividades(s) }}</td>
         <td>{{ getCostoTotal(s) | currency:'$' }}</td>
@@ -165,6 +169,7 @@
   </table>
 </div>
 
+<!-- Formulario de Edición de Socio -->
 <div class="editar-socio-container" *ngIf="editandoSocioId !== null">
   <h1>Editar Datos Personales del Socio</h1>
   <form [formGroup]="editForm" class="formulario">
@@ -177,14 +182,15 @@
     <div class="campo">
       <label>Categoría*</label>
       <select formControlName="categoria" required>
-        <option value="" disabled selected>Seleccione una categoría</option>
+        <option [ngValue]="null" disabled selected>Seleccione una categoría</option>
         <option *ngFor="let cat of categorias" [ngValue]="cat">{{ cat.nombre }} - ${{ cat.costo }}</option>
       </select>
     </div>
     <div class="campo">
       <label for="editActividades">Actividad*</label>
       <select id="editActividades" formControlName="actividades" multiple title="actividades">
-        <option *ngFor="let actividad of actividades" [ngValue]="actividad.id_actividad">
+        <!-- CORRECCIÓN CLAVE AQUÍ: cambia [ngValue]="actividad.id_actividad" a [ngValue]="actividad" -->
+        <option *ngFor="let actividad of actividades" [ngValue]="actividad">
           {{ actividad.nombre }} - ${{ actividad.precio }}
         </option>
       </select>
