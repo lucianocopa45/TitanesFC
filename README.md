@@ -76,6 +76,17 @@ Aplicación web **fullstack** para la gestión de socios, profesores y actividad
 
 #### Frontend
 ```bash
-git clone git@github.com:lucianocopa45/TitanesFC.git
-cd TitanesFC
+git clone https://github.com/lucianocopa45/TitanesFC.git
 npm install
+```
+
+### Base de datos
+```bash
+https://drive.google.com/drive/folders/1PVC0YiGf-raeXF_F68T8ctncUpNWNUbP?usp=drive_link
+```
+
+### Backend
+```bash
+git clone https://github.com/AndresIFTS24/backendTitanes.git
+npm install
+```
