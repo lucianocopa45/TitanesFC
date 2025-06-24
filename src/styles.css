@@ -1,4 +1,3 @@
-/* You can add global styles to this file, and also import other style files */
 *{
       margin: 0;
     padding: 0;
@@ -7,10 +6,12 @@
     text-decoration: none;
 
 }
+
 html, body {
   margin: 0;
   padding: 0;
   height: 100%;
+  background-color: #0A1930;
 }
 
 app-root {
@@ -18,9 +19,93 @@ app-root {
   flex-direction: column;
   min-height: 100vh;
 }
+.titulo-titanes, .subtitulo-titanes{
+font-size: 30px;
+}
+.subtitulo-titanes{
+    color: blue;
+    font-size: 20px;
+}
+.logo-redes{
+  display: flex;
+  gap: 15px;
+}
+.redes{
+    display: flex;
+    gap: 20px;
+    margin-top: 15px;
+}
+.redes a {
+  color: white;
+  text-decoration: none;
+  transition: 0.3s;
+}
 
-main {
-  flex: 1;
-  padding: 1rem;
-  background-color: #0A1930;
+.redes a:hover {
+  color: #ff9900;
+  transform: scale(1.2);
+}
+
+.redes i {
+  font-size: 35px; 
+}
+.bi{
+    color: black;
+    transition: color 0.5s;
+}
+.bi:hover{
+    color: aliceblue;
+}
+
+.footer-titanes{
+    background-color: #B22222;
+    color: white;
+}
+.card-divGeneral{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    padding: 30px;
+}
+.divisor-cards{
+  width: 5px;
+  background-color: rgb(0, 37, 247);
+  opacity: 0.7;
+  border-radius: 10px;
+}
+small{
+    display: flex;
+    padding: 5px;
+    justify-content: center;
+    font-size: 18px;
+}
+.nav-enlacesRapidos{
+    color: black;
+    transition: 0.3s;
+}
+.nav-enlacesRapidos:hover{
+    color: aliceblue;
+}
+.navbar .nav-link {
+  color: white !important;
+  position: relative;
+  text-decoration: none;
+  font-weight: 500;
+  padding-bottom: 5px;
+}
+
+.navbar .nav-link::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 2px;
+  background-color: white;
+  width: 0%;
+  transition: width 0.3s ease-in-out;
+}
+
+.navbar .nav-link:hover::after,
+.navbar .nav-link.active::after {
+  width: 100%;
 }

@@ -1,24 +1,9 @@
-.navbar .nav-link {
-  color: white !important;
-  position: relative;
-  text-decoration: none;
-  font-weight: 500;
-  padding-bottom: 5px;
+.navbar-expand-lg .navbar-collapse {
+    display: flex !important;
+    flex-basis: auto;
+    justify-content: space-between;
 }
-
-.navbar .nav-link::after {
-  content: "";
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  height: 2px;
-  background-color: white;
-  width: 0%;
-  transition: width 0.3s ease-in-out;
+.cardUserLog{
+    display: flex;
+    flex-direction: row;
 }
-
-.navbar .nav-link:hover::after,
-.navbar .nav-link.active::after {
-  width: 100%;
-}
-
