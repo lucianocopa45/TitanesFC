@@ -29,7 +29,7 @@ Aplicación web **fullstack** para la gestión de socios, profesores y actividad
 
 ### 🎨 Diseño UI/UX
 - Prototipo realizado en Figma  
-  [🔗 Ver diseño en Figma](https://www.figma.com/design/rPCyLBC6D6kpHGGrGNeJxP/TitanesFC-Dise%C3%B1o?node-id=0-1&t=htt6OfL6Yopi2nlJ-1)
+  [🔗 Ver diseño en Figma]([https://www.figma.com/design/rPCyLBC6D6kpHGGrGNeJxP/TitanesFC-Dise%C3%B1o?node-id=0-1&t=htt6OfL6Yopi2nlJ-1](https://www.figma.com/design/rPCyLBC6D6kpHGGrGNeJxP/TitanesFC-Dise%C3%B1o?node-id=0-1&t=5cku1ulKsIKxSd2N-1))
 
 ---
 
