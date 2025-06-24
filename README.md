@@ -82,7 +82,7 @@ npm install
 
 ### Base de datos
 ```bash
-https://drive.google.com/drive/folders/1PVC0YiGf-raeXF_F68T8ctncUpNWNUbP?usp=drive_link
+https://drive.google.com/file/d/1bi18fctNCK-rPYKYECYA-Vm7Z0RhaHwZ/view?usp=drive_link
 ```
 
 ### Backend
