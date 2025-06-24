@@ -41,10 +41,10 @@
   <div class="divVentanaResultados" *ngIf="opcionSeleccionada">
     
     <!-- DNI -->
-    <div *ngIf="opcionSeleccionada === 'dni'">
-      <!-- <label for="filtroBusqueda">Ingrese DNI:</label>
+    <!-- <div *ngIf="opcionSeleccionada === 'dni'">
+       <label for="filtroBusqueda">Ingrese DNI:</label>
       <input type="text" id="filtroBusqueda" [(ngModel)]="filtroBusqueda" />
-      <button (click)="buscar()">Buscar</button> -->
+      <button (click)="buscar()">Buscar</button> 
 
 <div class="tabla-container" *ngIf="socioEncontrado">
   <h2>Datos del socio</h2>
@@ -80,7 +80,7 @@
       </tr>
     </table>
 
-    <!-- Mostrar profesor si existe -->
+    Mostrar profesor si existe 
     <div *ngIf="profesorDeActividad; else sinProfe">
       <h2>Profesor asignado</h2>
       <table class="tabla-reportes">
@@ -97,7 +97,7 @@
       </table>
     </div>
 
-    <!-- Mensaje si no hay profesor -->
+     Mensaje si no hay profesor
     <ng-template #sinProfe>
       <p class="mensaje-errorDni">Sin profesor asignado para esta actividad.</p>
     </ng-template>
@@ -107,7 +107,75 @@
     <p class="mensaje-errorDni">El socio no tiene actividad asignada.</p>
   </ng-template>
 </div>
+    </div> -->
+
+    <div *ngIf="opcionSeleccionada === 'dni'">
+  <div class="tabla-container" *ngIf="socioEncontrado">
+    <h2>Datos del socio</h2>
+    <table class="tabla-reportes">
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Apellido</th>
+          <th>DNI</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>{{ socioEncontrado.nombre }}</td>
+          <td>{{ socioEncontrado.apellido }}</td>
+          <td>{{ socioEncontrado.dni }}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div *ngIf="actividadDelSocio; else sinActividad">
+      <h2>Actividad asignada</h2>
+      <table class="tabla-reportes">
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Día</th>
+            <th>Horario</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>{{ actividadDelSocio.nombre }}</td>
+            <td>{{ actividadDelSocio.dia }}</td>
+            <td>{{ actividadDelSocio.horario }}</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div *ngIf="profesorDeActividad; else sinProfe">
+        <h2>Profesor asignado</h2>
+        <table class="tabla-reportes">
+          <thead>
+            <tr>
+              <th>Nombre</th>
+              <th>Apellido</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>{{ profesorDeActividad.nombre }}</td>
+              <td>{{ profesorDeActividad.apellido }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <ng-template #sinProfe>
+        <p class="mensaje-errorDni">Sin profesor asignado para esta actividad.</p>
+      </ng-template>
     </div>
+
+    <ng-template #sinActividad>
+      <p class="mensaje-errorDni">El socio no tiene actividad asignada.</p>
+    </ng-template>
+  </div>
+</div>
 
     <!-- DISPONIBILIDAD -->
     <div *ngIf="opcionSeleccionada === 'disponibilidad'">
@@ -189,7 +257,7 @@
     <tbody>
       <tr *ngFor="let socio of sociosFiltrados">
         <td>
-          <strong class="estado-activo" *ngIf="socio.estadoSocio === true; else noActivo">Activo</strong>
+          <strong class="estado-activo" *ngIf="+socio.estado_socio === 1; else noActivo">Activo</strong>
          <ng-template #noActivo><strong class="estado-inactivo">No Activo</strong></ng-template>
         </td>
         <td>

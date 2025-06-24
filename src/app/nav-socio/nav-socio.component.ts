@@ -2,7 +2,6 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { LoginAdminService } from '../service/login-admin.service';
-import { Usuario } from '../models/Usuario.models';
 declare var bootstrap: any;
 @Component({
   selector: 'app-nav-socio',
@@ -14,7 +13,6 @@ export class NavSocioComponent {
   email: string='';
   password: string='';
   @ViewChild('loginModal') loginModal!: ElementRef;
-  //loginData: Usuario | undefined;
   constructor(private _apiServiceLogin: LoginAdminService, private router: Router){}
   onSubmit(){ 
     const loginData = {
@@ -22,9 +20,8 @@ export class NavSocioComponent {
     password: this.password
   };
       this._apiServiceLogin.validarUser(loginData).subscribe({
-          //console.log(loginData);
           next: (response)=>{
-          const rol = response.usuario.rol.toUpperCase(); // ✅ corrección
+          const rol = response.usuario.rol.toUpperCase(); 
 
             console.log("Login exitoso",response);
             console.log(rol);

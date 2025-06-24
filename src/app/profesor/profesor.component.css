@@ -1,5 +1,8 @@
+.general{
+  width: 1700px;
+}
 .registro-profesores-container {
-  background-color: #0d1c38; /* azul oscuro */
+  background-color: #0d1c38; 
   color: white;
   padding: 2rem;
   border-radius: 12px;

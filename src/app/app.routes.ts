@@ -21,7 +21,6 @@ export const routes: Routes = [
       { path: 'panel', component: InicioSocioComponent },
       { path: 'miPerfil', component: MiPerfilComponent },
       { path: 'contacto', component: ContactoComponent }
-      //{ path: '**', redirectTo: 'panel', pathMatch: 'full' }
     ]
   },
 {
@@ -32,8 +31,7 @@ export const routes: Routes = [
     { path: 'socios', component: SociosComponent },
     { path: 'profesores', component: ProfesorComponent },
     { path: 'actividades', component: ActividadComponent },
-    { path: 'reportes', component: ReportesComponent },
-    //{ path: '**', redirectTo: '', pathMatch: 'full' } // esto se pone al final
+    { path: 'reportes', component: ReportesComponent }
   ]
 }
 ];  

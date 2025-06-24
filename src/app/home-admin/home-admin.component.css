@@ -7,15 +7,15 @@ body {
 }
 
 .container {
-  max-width: 1200px;
-  margin: 40px auto;
+  margin: 70px auto;
   padding: 0 20px;
+  width: 1800px;
 }
 
 /* Tarjeta bienvenida */
 .card-general {
   background: linear-gradient(90deg, #ffffff 80%, #e0e7ff 100%);
-  padding: 40px 30px;
+  padding: 50px 40px;
   border-radius: 18px;
   box-shadow: 0 6px 24px rgba(30, 64, 175, 0.08);
   margin-bottom: 36px;
@@ -25,13 +25,12 @@ body {
 
 .card-general h1 {
   margin: 0 0 12px;
-  font-size: 32px;
+  font-size: 50px;
   color: #2563eb;
-  letter-spacing: .5px;
 }
 
 .card-general p {
-  font-size: 18px;
+  font-size: 25px;
   color: #64748b;
 }
 

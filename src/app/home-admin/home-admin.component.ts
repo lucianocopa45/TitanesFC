@@ -1,47 +1,54 @@
 import { Component, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { listaInscripciones } from '../models/Inscripcion';
-import { listaSocios } from '../models/Socio';
-import { DatePipe } from '@angular/common';
 import { listaActividades } from '../models/Actividad';
+import { SociosService } from '../service/socios.service';
 
 @Component({
   selector: 'app-home-admin',
-  imports: [RouterModule, DatePipe],
+  imports: [RouterModule],
   templateUrl: './home-admin.component.html',
   styleUrl: './home-admin.component.css'
 })
 export class HomeAdminComponent implements OnInit{
-ngOnInit(): void {
-  const inscripcionesActivas = this.filtroInscripcion.filter(i => i.estado === true);
-
-  this.inscripcionActivaSocios = inscripcionesActivas.map(insc => {
-    const socio = this.filtroSocios.find(s => s.id_socio === insc.id_socio);
-    const actividad = this.filtroActividades.find(a => a.id_actividad === insc.id_actividad);
-
-    return {
-      nombreSocio: socio?.nombre,
-      apellidoSocio:socio?.apellido,
-      nombreActividad: actividad?.nombre,
-      fecha: insc.fecha_inscripcion
-    };
-  });
-  console.log(this.inscripcionActivaSocios);
-// while (this.inscripcionActivaSocios.length>5) {
-// this.inscripcionActivaSocios.shift(); 
-// }
-this.inscripcionActivaSocios = this.inscripcionActivaSocios.slice(-5);
-
-console.log(this.inscripcionActivaSocios)
-}
 arrayHistorial: any[]=[];
 imagen: string = '';
 filtroInscripcion = listaInscripciones;
-filtroSocios = listaSocios;
 filtroActividades = listaActividades;
 
 filtrarInscripcion: any[]=[];
 inscripcionActivaSocios: any[]=[];
+  constructor(private socioService: SociosService){
+  }
+ngOnInit(): void {
 
+this.socioService.getSocios().subscribe({
+  next: (res) => {
+    // Filtrar socios con al menos una inscripción
+    const sociosConInscripcion = res.filter(socio => 
+      socio.actividadesSocio && socio.actividadesSocio.length > 0
+    );
+
+
+    const ultimos5 = sociosConInscripcion.slice(-5).reverse(); // los más recientes arriba
+
+    this.inscripcionActivaSocios = ultimos5.map(socio => ({
+      nombreSocio: socio.nombre,
+      apellidoSocio: socio.apellido,
+      nombreActividad: socio.actividadesSocio[0]?.nombre || 'Sin actividad',
+      fecha: 'Sin fecha' 
+    }));
+  },
+  error: () => {
+    alert('Error al cargar socios');
+  }
+});
+
+  console.log(this.inscripcionActivaSocios);
+
+this.inscripcionActivaSocios = this.inscripcionActivaSocios.slice(-5);
+
+console.log(this.inscripcionActivaSocios)
+}
 
 }

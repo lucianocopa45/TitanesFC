@@ -33,9 +33,7 @@ export class NavbarComponent implements OnInit{
   }
 
   cerrarSesion() {
-  // Por ejemplo, si usás localStorage:
   localStorage.clear();
-  // Redirigís al login
   window.location.href = '/panel';
 }
 }

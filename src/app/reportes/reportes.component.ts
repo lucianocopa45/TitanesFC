@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { Socio, listaSocios } from '../models/Socio';
+import { listaSocios } from '../models/Socio';
 import { Actividad, listaActividades } from '../models/Actividad';
-import { Inscripcion, listaInscripciones } from '../models/Inscripcion';
+import { listaInscripciones } from '../models/Inscripcion';
+import { HttpClient } from '@angular/common/http';
+
 @Component({
   selector: 'app-reportes',
   imports: [CommonModule,FormsModule],
@@ -12,12 +14,14 @@ import { Inscripcion, listaInscripciones } from '../models/Inscripcion';
 })
 export class ReportesComponent implements OnInit {
 
+  constructor(private http: HttpClient){
+
+  }
   ngOnInit(): void {
       this.estadoBuscador = false;
+
   }
-    // Para el reporte de actividades del socio (por DNI)
-    // socioEncontrado: any = null;
-// actividadDelSocio: Actividad | null = null;
+
 
 textoLabelCheckBox:string = '';
 placeHolderCheckBox:string = '';
@@ -46,88 +50,109 @@ actividadDelSocio: any = null;
 
   mostrarDetalles: { [dni: string]: boolean } = {};
 
+socioDatos: any[] = [];
+dniNoEncontrado = false;
+  cargarActividades() {
+    this.http.get<any[]>('http://localhost:3000/api/actividades').subscribe({
+      next: (res) => this.actividades = res,
+      error: () => alert('Error al cargar actividades')
+    });
+  }
 
-buscar() {
-  const filtro = this.filtroBusqueda.toLowerCase();
+  cargarSocios() {
+    this.http.get<any[]>('http://localhost:3000/api/socios').subscribe({
+      next: (res) => {
+        this.socios = res;
+        this.sociosFiltrados = [...res];
+      },
+      error: () => alert('Error al cargar socios')
+    });
+  }
+  buscar() {
+    const filtro = this.filtroBusqueda.trim().toLowerCase();
 
-if (this.opcionSeleccionada === 'dni') {
-  const dniFiltrado = this.filtroBusqueda.trim();
-  this.socioEncontrado = this.socios.find(socio => socio.dni === dniFiltrado);
+    if (this.opcionSeleccionada === 'dni') {
+      if (!filtro) return;
 
-  if (this.socioEncontrado) {
-    const inscripcionActiva = this.inscripciones.find(ins =>
-      ins.id_socio === this.socioEncontrado.id_socio && ins.estado === true
-    );
-
-    if (inscripcionActiva) {
-      this.actividadDelSocio = this.actividades.find(act =>
-        act.id_actividad === inscripcionActiva.id_actividad
-      );
-
-      if (this.actividadDelSocio) {
-        const profesoresGuardados = localStorage.getItem('profesores');
-        if (profesoresGuardados) {
-          const profesores = JSON.parse(profesoresGuardados);
-
-          // Buscar profesor que tenga la actividad exacta asignada
-          const profesor = profesores.find((prof: any) =>
-            Array.isArray(prof.actividades) &&
-            prof.actividades.some((act: any) =>
-              act.id_actividad === this.actividadDelSocio!.id_actividad
-            )
-          );
-
-          if (profesor) {
-            this.profesorDeActividad = profesor;
-            this.actividadAsignadaAlProfesor = profesor.actividades.find((act: any) =>
-              act.id_actividad === this.actividadDelSocio!.id_actividad
-            );
+      this.http.get<any[]>(`http://localhost:3000/api/socio/dni/${filtro}`).subscribe({
+        next: (res) => {
+          if (res.length > 0) {
+            const socio = res[0];
+            this.socioEncontrado = {
+              nombre: socio.nombre_socio,
+              apellido: socio.apellido_socio,
+              dni: socio.dni
+            };
+            this.actividadDelSocio = {
+              nombre: socio.nombre_actividad,
+              dia: socio.dia,
+              horario: socio.horario
+            };
+            this.profesorDeActividad = {
+              nombre: socio.nombre_profesor,
+              apellido: socio.apellido_profesor
+            };
           } else {
+            this.socioEncontrado = null;
+            this.actividadDelSocio = null;
             this.profesorDeActividad = null;
-            this.actividadAsignadaAlProfesor = null;
           }
-        } else {
+        },
+        error: () => {
+          this.socioEncontrado = null;
+          this.actividadDelSocio = null;
           this.profesorDeActividad = null;
-          this.actividadAsignadaAlProfesor = null;
         }
-      } else {
-        this.profesorDeActividad = null;
-        this.actividadAsignadaAlProfesor = null;
-      }
-    } else {
-      this.actividadDelSocio = null;
-      this.profesorDeActividad = null;
-      this.actividadAsignadaAlProfesor = null;
+      });
     }
-  } else {
-    this.actividadDelSocio = null;
-    this.profesorDeActividad = null;
-    this.actividadAsignadaAlProfesor = null;
-  }
-}
 
-  else if (this.opcionSeleccionada === 'disponibilidad') {
-    const diaFiltrado = this.filtroBusqueda.trim().toLowerCase();
-
-    this.actividadesDisponibles = this.actividades.filter(actividad =>
-      actividad.dia.toLowerCase() === diaFiltrado
-    );
-  }
-
-
-  else if (this.opcionSeleccionada === 'socios') {
-    const nombreFiltro = this.filtroBusqueda.trim().toLowerCase();
-
-    if (nombreFiltro === '') {
-          this.sociosFiltrados = [...this.socios];
+else if (this.opcionSeleccionada === 'disponibilidad') {
+  if (!filtro) {
+    this.actividadesDisponibles = [];
     return;
-    }else{
-    this.sociosFiltrados = this.socios.filter( s => s.nombre.toLowerCase() === nombreFiltro);
-    }
-
   }
+
+  // Obtener todas las actividades y filtrar por nombre
+  this.http.get<any[]>(`http://localhost:3000/api/actividades`).subscribe({
+    next: (res) => {
+      const filtroDia = filtro.toLowerCase();
+      this.actividadesDisponibles = res.filter(act =>
+        act.dia.toLowerCase().includes(filtroDia)
+      );
+    },
+    error: () => {
+      this.actividadesDisponibles = [];
+    }
+  });
 }
 
+else if (this.opcionSeleccionada === 'socios') {
+  if (!filtro) {
+    // Trae todos los socios si no hay filtro
+    this.http.get<any[]>(`http://localhost:3000/api/socios`).subscribe({
+      next: (res) => {
+        this.sociosFiltrados = res;
+      },
+      error: () => {
+        this.sociosFiltrados = [];
+      }
+    });
+  } else {
+    // Trae todos los socios y filtra por nombre desde el front
+    this.http.get<any[]>(`http://localhost:3000/api/socios`).subscribe({
+      next: (res) => {
+        const filtroNombre = filtro.toLowerCase();
+        this.sociosFiltrados = res.filter(socio =>
+          socio.nombre.toLowerCase().includes(filtroNombre)
+        );
+      },
+      error: () => {
+        this.sociosFiltrados = [];
+      }
+    });
+  }
+}
+  }
 ocultarBuscador(estado:boolean){
 this.estadoBuscador = estado;
 if (this.opcionSeleccionada === 'dni') {

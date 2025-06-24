@@ -1,4 +1,3 @@
-//import { Actividad } from './Actividad';
 
 export interface Profesor{
     id_profesor:       number;

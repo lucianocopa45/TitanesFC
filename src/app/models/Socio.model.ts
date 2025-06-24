@@ -4,10 +4,10 @@ export interface Socio {
   dni: string;
   nombre: string;
   apellido: string;
-  fechaNacimiento: string;  // o Date, si querés manejar objetos Date
+  fechaNacimiento: string;
   direccion: string;
   telefono: string;
-  fechaIngreso: string;    // o Date
+  fechaIngreso: string;   
   categoria: string;
   urlFoto: string;
   estadoSocio: boolean;

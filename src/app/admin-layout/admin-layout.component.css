@@ -9,4 +9,6 @@ main {
   padding: 1rem;
   background-color: #0A1930;
   color: aliceblue;
+  display: flex;
+  justify-content: center;
 }
